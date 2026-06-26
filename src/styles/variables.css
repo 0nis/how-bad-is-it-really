@@ -1,0 +1,23 @@
+:root {
+  --bg-0: #0f0f13;
+  --bg-1: #17171e;
+  --bg-2: #1e1e28;
+
+  --border: #2e2e3d;
+  --border-soft: #22222d;
+
+  --text-primary: #e8e6f0;
+  --text-secondary: #8b8aa0;
+  --text-tertiary: #55546a;
+
+  --accent: #e8a838;
+  --accent-dim: #8a6220;
+  --accent-glow: rgba(232, 168, 56, 0.12);
+
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+}

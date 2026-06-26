@@ -1,2 +1,3 @@
-# how-bad-is-it
-See how extreme a temperature *really* is
+# HowBadIsIt
+
+See how extreme a temperature _really_ is
