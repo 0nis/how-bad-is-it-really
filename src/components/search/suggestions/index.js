@@ -1,4 +1,4 @@
-import { resetSheet } from "../../../styles/reset.js";
+import { globalSheet } from "../../../styles/sheets/global.js";
 import { el } from "../../../utils/dom.js";
 import { renderShadow } from "../../../utils/shadow.js";
 import { style } from "./style.js";
@@ -8,7 +8,7 @@ class SearchSuggestions extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.adoptedStyleSheets = [resetSheet];
+    this.shadowRoot.adoptedStyleSheets = [globalSheet];
     this.locations = [];
   }
 

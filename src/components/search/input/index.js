@@ -1,7 +1,7 @@
 import { searchLocations } from "../../../api/locations.js";
 import { runAnalysis } from "../../../app/analysis.js";
 import { setState, subscribe } from "../../../app/store.js";
-import { resetSheet } from "../../../styles/reset.js";
+import { globalSheet } from "../../../styles/sheets/global.js";
 import { el } from "../../../utils/dom.js";
 import { renderShadow } from "../../../utils/shadow.js";
 import { style } from "./style.js";
@@ -19,7 +19,7 @@ class Search extends HTMLElement {
     };
 
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.adoptedStyleSheets = [resetSheet];
+    this.shadowRoot.adoptedStyleSheets = [globalSheet];
     this.handleInput = this.handleInput.bind(this);
   }
 

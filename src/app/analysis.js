@@ -22,7 +22,7 @@ export async function runAnalysis(location) {
 
       interpretation: {
         label: "Very unusual",
-        severity: "2",
+        severity: "3",
       },
 
       frequency: {
