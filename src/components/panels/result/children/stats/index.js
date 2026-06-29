@@ -1,5 +1,10 @@
 import { globalSheet } from "../../../../../styles/sheets/global.js";
 import { renderShadow } from "../../../../../utils/shadow.js";
+import {
+  formatPrecipitation,
+  formatTemp,
+  formatWind,
+} from "../../../../../utils/weather.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
 
@@ -10,10 +15,73 @@ class ResultStats extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [globalSheet];
 
     renderShadow(this.shadowRoot, template, style);
+
+    this.metrics = {
+      temperature: {
+        row: "#temp",
+        id: "temperature",
+        format: formatTemp,
+      },
+
+      feels: {
+        row: "#feels",
+        id: "apparentTemperature",
+        format: formatTemp,
+      },
+
+      humidity: {
+        row: "#hum",
+        id: "humidity",
+        format: (v) => `${v.toFixed(1)}%`,
+      },
+
+      precipitation: {
+        row: "#prec",
+        id: "precipitation",
+        format: formatPrecipitation,
+      },
+
+      wind: {
+        row: "#wind",
+        id: "wind",
+        format: formatWind,
+      },
+
+      cloudCover: {
+        row: "#cc",
+        id: "cloudCover",
+        format: (v) => `${Math.round(v)}%`,
+      },
+    };
   }
 
-  setData() {
-    // TODO
+  setData(result) {
+    for (const key in this.metrics) {
+      const m = this.metrics[key];
+
+      const row = this.shadowRoot.querySelector(m.row);
+
+      if (
+        (result.basedOn === "raw" && key === "temperature") ||
+        (result.basedOn === "feels" && key === "feels")
+      )
+        row.style.setProperty("color", "var(--accent)");
+
+      const observed = result.observed[m.id];
+      const mean = result.historical[m.id]?.mean;
+      const std = result.historical[m.id]?.std;
+
+      if (observed == null || mean == null || std == null) {
+        row.hidden = true;
+        continue;
+      }
+
+      const fmt = m.format;
+
+      row.querySelector("[data-now]").textContent = fmt(observed);
+      row.querySelector("[data-mean]").textContent = fmt(mean);
+      row.querySelector("[data-std]").textContent = `±${fmt(std)}`;
+    }
   }
 }
 

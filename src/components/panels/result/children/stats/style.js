@@ -1,26 +1,35 @@
 export const style = /* CSS */ `
+    .stats-card {
+        padding: 0.75rem;
+        border-radius: 12px;
+        background: var(--bg-1);
+    }
+    
     .stats-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.65rem 1rem;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr;
+        gap: 0.4rem 0.75rem;
+        font-size: 0.85rem;
     }
 
-    .stat-row {
+    .row {
         display: contents;
     }
 
-    .stat-label {
-        font-size: 0.8rem;
-        color: var(--text-secondary);
-        display: flex;
-        align-items: center;
+    .row > div {
+        padding: 0.25rem 0;
     }
 
-    .stat-value {
-        font-family: var(--font-mono);
-        font-size: 0.875rem;
-        color: var(--text-primary);
-        font-weight: 500;
-        text-align: right;
+    .header {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
     }
-    `;
+
+    .positive {
+        color: #ff6b6b;
+    }
+
+    .negative {
+        color: #4dabf7;
+    }
+`;

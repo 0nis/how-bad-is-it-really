@@ -111,6 +111,7 @@ export async function runAnalysis(location, conditions) {
         severity: sigmaToSeverity(sigma),
         label: sigmaToLabel(sigma),
         sampleSize: tempStats.count,
+        basedOn: useApparentTemp ? "feels" : "raw",
         observed: conditions,
         historical: stats,
       },

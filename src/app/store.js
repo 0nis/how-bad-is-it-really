@@ -47,13 +47,14 @@ const state = {
    *    severity: number;
    *    frequency: string;
    *    sampleSize: number;
+   *    basedOn: "raw" | "feels";
    *    observed: {
    *        temperature: number,
-   *        apparentTemperature: number,
-   *        humidity: number,
-   *        windSpeed: number,
-   *        precipitation: number,
-   *        cloudCover: number
+   *        apparentTemperature?: number,
+   *        humidity?: number,
+   *        windSpeed?: number,
+   *        precipitation?: number,
+   *        cloudCover?: number
    *    },
    *    historical: {
    *        temperature: {

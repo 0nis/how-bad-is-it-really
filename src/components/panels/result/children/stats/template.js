@@ -1,24 +1,54 @@
 export const template = /* HTML */ `
-  <dl class="stats">
-    <div class="stat-row">
-      <dt class="stat-label">Temperature</dt>
-      <dd class="stat-value" id="temperature"></dd>
+  <div class="stats-card">
+    <div class="stats-grid">
+      <div class="row header">
+        <div>Metric</div>
+        <div>Now</div>
+        <div>Normal</div>
+        <div>Variability</div>
+      </div>
+
+      <div id="temp" class="row">
+        <span>Temperature</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
+
+      <div id="feels" class="row">
+        <span>Feels like</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
+
+      <div id="hum" class="row">
+        <span>Humidity</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
+
+      <div id="prec" class="row">
+        <span>Precipitation</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
+
+      <div id="wind" class="row">
+        <span>Wind</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
+
+      <div id="cc" class="row">
+        <span>Cloud cover</span>
+        <span data-now></span>
+        <span data-mean></span>
+        <span data-std></span>
+      </div>
     </div>
-    <div class="stat-row">
-      <dt class="stat-label">Feels like (heat index)</dt>
-      <dd class="stat-value" id="heat-index"></dd>
-    </div>
-    <div class="stat-row">
-      <dt class="stat-label">Humidity</dt>
-      <dd class="stat-value" id="humidity"></dd>
-    </div>
-    <div class="stat-row">
-      <dt class="stat-label">30yr seasonal mean</dt>
-      <dd class="stat-value" id="temp-mean"></dd>
-    </div>
-    <div class="stat-row">
-      <dt class="stat-label">Typical variation</dt>
-      <dd class="stat-value" id="temp-std"></dd>
-    </div>
-  </dl>
+  </div>
 `;
