@@ -13,20 +13,24 @@ export const style = /* CSS */ `
 
     .bar {
         position: absolute;
-        left: 0;
+        left: 50%;
         top: 0;
         height: 100%;
-        width: var(--gauge-pct, 50%);
+        width: 50%;
+        transform-origin: left center;
+
         background: var(--gauge-color, var(--gauge-normal));
         border-radius: 99px;
+
         transition:
-            width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+            transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
             background 0.4s ease;
     }
 
     .marker {
         position: absolute;
         top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
         width: 16px;
         height: 16px;

@@ -17,10 +17,15 @@ class ResultGauge extends HTMLElement {
 
   setData(result) {
     const clamped = Math.max(-4, Math.min(4, result.sigma));
-    const pct = ((clamped + 4) / 8) * 100;
+    const norm = clamped / 4;
+    const abs = Math.abs(norm);
+    const direction = norm < 0 ? -1 : 1;
+    this.barEl.style.transform = `scaleX(${abs * direction})`;
+
     const color = this.getColor(result.severity);
-    this.barEl.style.setProperty("--gauge-pct", `${pct}%`);
     this.barEl.style.setProperty("--gauge-color", color);
+
+    const pct = 50 + (clamped / 4) * 50;
     this.markerEl.style.left = `${pct}%`;
   }
 
