@@ -15,7 +15,7 @@ export const style = /* CSS */ `
     .inner h3 {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--sev-4);
+        color: var(--accent);
     }
 
     #message {

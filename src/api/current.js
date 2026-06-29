@@ -4,6 +4,8 @@ import { FORECAST_BASE } from "../constants.js";
  * Fetch today's weather conditions for a coordinate.
  * Uses the forecast API's past_days=1 to ensure today is always included.
  *
+ * 'time' is the ISO 8601 date string in the locale timezone of the location.
+ *
  * @param {number} lat Latitude
  * @param {number} lon Longitude
  * @returns {Promise<{

@@ -12,34 +12,27 @@ class ResultHero extends HTMLElement {
 
     renderShadow(this.shadowRoot, template, style);
 
-    this.pctValueEl = this.shadowRoot.querySelector("#pct-value");
-    this.pctDescriptorEl = this.shadowRoot.querySelector("#pct-descriptor");
-    this.tempDescriptorEl = this.shadowRoot.querySelector("#temp-descriptor");
+    this.labelEl = this.shadowRoot.querySelector("#label");
     this.frequencyEl = this.shadowRoot.querySelector("#frequency");
+    this.descriptionEl = this.shadowRoot.querySelector("#description");
   }
 
   setData(result) {
-    const isHot = result.sigma >= 0;
-    this.pctValueEl.textContent = `${this.getPercentile(isHot, result.percentile)}%`;
-    this.pctValueEl.className = `severity-${result.severity}`;
-    this.pctDescriptorEl.textContent = this.getDescription(
-      isHot,
-      result.percentile,
-      result.location,
-    );
-    this.tempDescriptorEl.textContent = result.label;
-    this.frequencyEl.textContent = capitalize(result.frequency);
-  }
+    this.labelEl.textContent = result.label;
+    this.labelEl.className = `severity-${result.severity}`;
 
-  getPercentile(isHot, percentile) {
-    return isHot
-      ? percentile.toFixed(percentile >= 99 ? 1 : 0)
-      : (100 - percentile).toFixed(100 - percentile >= 99 ? 1 : 0);
+    this.frequencyEl.textContent = capitalize(result.frequency);
+
+    this.descriptionEl.textContent = this.getDescription(
+      result.sigma > 0,
+      result.percentile,
+      result.location.name,
+    );
   }
 
   getDescription(isHot, percentile, location) {
     const pctForPhrase = isHot ? percentile : 100 - percentile;
-    return `${isHot ? "hotter" : "colder"} than ${pctForPhrase.toFixed(pctForPhrase >= 99 ? 1 : 0)}% of days like this in ${location.name}.`;
+    return `${isHot ? "hotter" : "colder"} than ${pctForPhrase.toFixed(pctForPhrase >= 99 ? 1 : 0)}% of days like this in ${location}`;
   }
 }
 

@@ -6,7 +6,7 @@ import {
   WINDOW_DAYS,
   WINDOW_HOURS,
 } from "../constants.js";
-import { shiftDays, toDateStr } from "../utils/date.js";
+import { getHourFromISO, shiftDays, toDateStr } from "../utils/date.js";
 import { setState } from "../app/store.js";
 import { toChunks } from "../utils/objects.js";
 import {
@@ -52,9 +52,9 @@ export async function runAnalysis(location, conditions) {
       conditions.time,
     );
 
-    const targetHour = new Date(conditions.time).getHours();
+    const targetHour = getHourFromISO(conditions.time);
     const windowedReadings = historicalReadings.filter((r) => {
-      const hour = new Date(r.time).getHours();
+      const hour = getHourFromISO(r.time);
       return Math.abs(hour - targetHour) <= WINDOW_HOURS;
     });
     if (windowedReadings.length < MIN_READINGS) {
@@ -64,8 +64,6 @@ export async function runAnalysis(location, conditions) {
       });
       return;
     }
-
-    const datetime = new Date(conditions.time);
 
     const stats = {
       temperature: computeStats(windowedReadings.map((r) => r.temperature)),
@@ -104,7 +102,8 @@ export async function runAnalysis(location, conditions) {
       status: "success",
       location: location,
       analysis: {
-        datetime,
+        datetime: conditions.time,
+        timezone: location.timezone,
         location,
         sigma,
         percentile: sigmaToPercentile(sigma),
@@ -116,7 +115,8 @@ export async function runAnalysis(location, conditions) {
         historical: stats,
       },
       cachedHistoricalData: {
-        datetime,
+        datetime: conditions.time,
+        timezone: location.timezone,
         location,
         ...stats,
       },

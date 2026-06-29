@@ -18,8 +18,18 @@ const state = {
   selectedLocation: null,
 
   /**
+   * Units:
+   * - datetime: ISO 8601
+   * - temperature: °C
+   * - apparentTemperature: °C
+   * - humidity: %
+   * - windSpeed: km/h
+   * - precipitation: mm
+   * - cloud cover: %
+   *
    * @type {{
-   *    datetime: Date,
+   *    datetime: string,
+   *    timezone: string,
    *    location: {
    *        id: number,
    *        name: string,
@@ -86,7 +96,8 @@ const state = {
 
   /**
    * @type {{
-   *    datetime: Date,
+   *    datetime: string,
+   *    timezone: string,
    *    location: {
    *        id: number,
    *        name: string,

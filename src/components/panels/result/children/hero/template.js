@@ -1,8 +1,7 @@
 export const template = /* HTML */ `
   <div class="hero">
-    <div id="pct-value"></div>
-    <p id="pct-descriptor"></p>
-    <p id="temp-descriptor"></p>
+    <div id="label"></div>
     <p id="frequency"></p>
+    <p id="description"></p>
   </div>
 `;

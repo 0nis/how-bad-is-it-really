@@ -1,11 +1,13 @@
 export const style = /* CSS */ `
-    #location {
+    .context {
+        margin-bottom: 1.5rem;
+    }
+    .context p {
         font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.09em;
         text-transform: uppercase;
         color: var(--text-tertiary);
-        margin-bottom: 1.5rem;
     }
 
     #sigma {

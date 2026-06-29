@@ -73,17 +73,17 @@ export function sigmaToFrequency(sigma) {
   ];
 
   for (const level of levels)
-    if (days <= level.maxDays) return `This level of weather ${level.label}.`;
+    if (days <= level.maxDays) return `This level of weather ${level.label}`;
 
   const years = Math.round(days / 365);
 
   if (years <= 2)
-    return "This level of weather occurs about once every 2 years.";
+    return "This level of weather occurs about once every 2 years";
   if (years < 10)
-    return `This level of weather occurs about once every ${years} years.`;
+    return `This level of weather occurs about once every ${years} years`;
   if (years < 50)
-    return `This level of weather is exceptionally rare (about once every ${years} years).`;
-  return "This level of weather is extraordinarily rare.";
+    return `This level of weather is exceptionally rare (about once every ${years} years)`;
+  return "This level of weather is extraordinarily rare";
 }
 
 /**
@@ -117,11 +117,9 @@ export function sigmaToLabel(sigma) {
 
   const thresholds = [
     { limit: 0.5, label: "Normal" },
-    { limit: 1.0, label: pick("A touch warm", "A touch cool") },
-    { limit: 1.5, label: pick("Noticeably warm", "Noticeably cool") },
+    { limit: 1.0, label: pick("Warm", "Cool") },
     { limit: 2.0, label: pick("Hot", "Cold") },
-    { limit: 2.5, label: pick("Unusually hot", "Unusually cold") },
-    { limit: 3.0, label: pick("Severely hot", "Severely cold") },
+    { limit: 3.0, label: pick("Very hot", "Very cold") },
     { limit: 4.0, label: pick("Extreme heat", "Extreme cold") },
   ];
 

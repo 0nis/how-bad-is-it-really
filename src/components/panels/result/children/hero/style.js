@@ -6,11 +6,13 @@ export const style = /* CSS */ `
         text-align: center;
         gap: 0.5rem;
         padding: 1.5rem 0 1rem;
+        container-type: inline-size;
     }
 
-    #pct-value {
+    #label {
         font-family: var(--font-mono);
-        font-size: clamp(3.5rem, 14vw, 6rem);
+        wrap: no-wrap;
+        font-size: clamp(2rem, 20cqw, 6rem);
         font-weight: 700;
         letter-spacing: -0.04em;
         line-height: 1;
@@ -36,7 +38,7 @@ export const style = /* CSS */ `
         color: var(--sev-5);
     }
 
-    #pct-descriptor {
+    #frequency {
         font-size: 0.9rem;
         color: var(--text-secondary);
     }
@@ -48,7 +50,7 @@ export const style = /* CSS */ `
         margin-top: 0.25rem;
     }
 
-    #frequency {
+    #pct-descriptor {
         font-size: 0.875rem;
         color: var(--text-secondary);
         font-style: italic;
