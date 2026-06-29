@@ -23,4 +23,14 @@ globalSheet.replaceSync(/* CSS */ `
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  @media (max-width: 520px) {
+    body {
+      padding: 1.5rem 0.75rem;
+    }
+  }
 `);

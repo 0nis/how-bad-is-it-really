@@ -1,0 +1,181 @@
+import { fetchCurrentConditions } from "../api/current.js";
+import { fetchHistoricalWeather } from "../api/history.js";
+import {
+  HISTORICAL_YEARS,
+  MIN_READINGS,
+  WINDOW_DAYS,
+  WINDOW_HOURS,
+} from "../constants.js";
+import { shiftDays, toDateStr } from "../utils/date.js";
+import { setState } from "../app/store.js";
+import { toChunks } from "../utils/objects.js";
+import {
+  computeStats,
+  sigmaToFrequency,
+  sigmaToLabel,
+  sigmaToPercentile,
+  sigmaToSeverity,
+  toSigma,
+} from "./calculation.js";
+
+/**
+ * Fetches the current weather conditions for the given location and runs {@link runAnalysis} on them.
+ *
+ * @param {{ name: string, country: string, admin1: string|null, admin2: string|null, latitude: number, longitude: number, elevation: number|null, timezone: string }} location
+ */
+export async function runAnalysisForCurrentConditions(location) {
+  await runAnalysis(
+    location,
+    await fetchCurrentConditions(location.latitude, location.longitude),
+  );
+}
+
+/**
+ * Analyzes the past weather conditions for the given location and compares them to the given conditions.
+ * Updates the store with the analysis results.
+ *
+ * @param {{ name: string, country: string, admin1: string|null, admin2: string|null, latitude: number, longitude: number, elevation: number|null, timezone: string }} location
+ * @param {{ time: string, temperature: number, apparentTemperature?: number, humidity?: number, windSpeed?: number, precipitation?: number, weatherCode?: number }} conditions
+ */
+export async function runAnalysis(location, conditions) {
+  try {
+    setState({
+      status: "loading",
+      location,
+      error: null,
+      analysis: null,
+    });
+
+    const historicalReadings = await fetchHistoricalWindow(
+      location.latitude,
+      location.longitude,
+      conditions.time,
+    );
+
+    const targetHour = new Date(conditions.time).getHours();
+    const windowedReadings = historicalReadings.filter((r) => {
+      const hour = new Date(r.time).getHours();
+      return Math.abs(hour - targetHour) <= WINDOW_HOURS;
+    });
+    if (windowedReadings.length < MIN_READINGS) {
+      setState({
+        status: "error",
+        error: "Not enough historical data for this location and time of day.",
+      });
+      return;
+    }
+
+    const datetime = new Date(conditions.time);
+
+    const stats = {
+      temperature: computeStats(windowedReadings.map((r) => r.temperature)),
+      apparentTemperature: computeStats(
+        windowedReadings.map((r) => r.apparentTemperature).filter(Boolean),
+      ),
+      humidity: computeStats(
+        windowedReadings.map((r) => r.humidity).filter(Boolean),
+      ),
+      windSpeed: computeStats(
+        windowedReadings.map((r) => r.windSpeed).filter(Boolean),
+      ),
+      precipitation: computeStats(
+        windowedReadings.map((r) => r.precipitation).filter(Boolean),
+      ),
+      cloudCover: computeStats(
+        windowedReadings.map((r) => r.cloudCover).filter(Boolean),
+      ),
+    };
+
+    const useApparentTemp =
+      conditions.apparentTemperature !== undefined &&
+      stats.apparentTemperature.count > MIN_READINGS;
+
+    const tempStats = useApparentTemp
+      ? stats.apparentTemperature
+      : stats.temperature;
+
+    const sigma = toSigma(
+      useApparentTemp ? conditions.apparentTemperature : conditions.temperature,
+      tempStats.mean,
+      tempStats.std,
+    );
+
+    const cloudCoverStats = setState({
+      status: "success",
+      location: location,
+      analysis: {
+        datetime,
+        location,
+        sigma,
+        percentile: sigmaToPercentile(sigma),
+        frequency: sigmaToFrequency(sigma),
+        severity: sigmaToSeverity(sigma),
+        label: sigmaToLabel(sigma),
+        sampleSize: tempStats.count,
+        observed: conditions,
+        historical: stats,
+      },
+      cachedHistoricalData: {
+        datetime,
+        location,
+        ...stats,
+      },
+      error: null,
+    });
+  } catch (err) {
+    setState({
+      status: "error",
+      error: err.message,
+    });
+    console.error(err);
+  }
+}
+
+/**
+ * Fires {@link HISTORICAL_YEARS} requests to fetch historical weather conditions for the given location.
+ * Requests are sent in chunks of {@link chunkSize} to be gentler on the API.
+ * Each request covers only +/- {@link WINDOW_DAYS} around the equivalent date in that year.
+ *
+ * @param {number} lat Latitude
+ * @param {number} lon Longitude
+ * @param {string} referenceTime Date to center the window around
+ * @param {number} chunkSize Number of requests to send at once
+ * @param {number} timeoutMs Timeout between each chunk of requests in ms
+ * @returns {Promise<{
+ *   time: string,
+ *   temperature: number,
+ *   apparentTemperature?: number,
+ *   humidity?: number,
+ *   windSpeed?: number,
+ *   precipitation?: number,
+ *   cloudCover?: number
+ * }[]>}
+ */
+async function fetchHistoricalWindow(
+  lat,
+  lon,
+  referenceTime,
+  chunkSize = 5,
+  timeoutMs = 500,
+) {
+  const requests = Array.from({ length: HISTORICAL_YEARS }, (_, i) => {
+    const year = i + 1;
+
+    const center = new Date(referenceTime);
+    center.setFullYear(center.getFullYear() - year);
+
+    const start = shiftDays(center, -WINDOW_DAYS);
+    const end = shiftDays(center, WINDOW_DAYS);
+
+    return () =>
+      fetchHistoricalWeather(lat, lon, toDateStr(start), toDateStr(end));
+  });
+
+  const chunks = toChunks(requests, chunkSize);
+  const results = [];
+  for (const batch of chunks) {
+    results.push(...(await Promise.all(batch.map((fn) => fn()))));
+    await new Promise((r) => setTimeout(r, timeoutMs));
+  }
+  return results.flat();
+}

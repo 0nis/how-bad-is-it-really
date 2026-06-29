@@ -1,5 +1,5 @@
 import { searchLocations } from "../../../api/locations.js";
-import { runAnalysis } from "../../../app/analysis.js";
+import { runAnalysisForCurrentConditions } from "../../../core/analysis.js";
 import { setState, subscribe } from "../../../app/store.js";
 import { globalSheet } from "../../../styles/sheets/global.js";
 import { el } from "../../../utils/dom.js";
@@ -20,6 +20,7 @@ class Search extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [globalSheet];
+
     this.handleInput = this.handleInput.bind(this);
   }
 
@@ -57,21 +58,19 @@ class Search extends HTMLElement {
     }, 300);
   }
 
-  selectLocation(loc) {
-    setState({ selectedLocation: loc });
-
-    // this.dispatchEvent(
-    //   new CustomEvent("location-selected", {
-    //     detail: loc,
-    //     bubbles: true,
-    //     composed: true,
-    //   }),
-    // );
-    runAnalysis(loc);
+  // TODO: Determine whether this belongs elsewhere?
+  selectLocation(location) {
+    setState({ selectedLocation: location });
+    this.inputEl.value = this.format(location);
+    runAnalysisForCurrentConditions(location);
   }
 
   render() {
     renderShadow(this.shadowRoot, template, style);
+  }
+
+  format(loc) {
+    return [loc.name, loc.admin1, loc.country].filter(Boolean).join(", ");
   }
 }
 

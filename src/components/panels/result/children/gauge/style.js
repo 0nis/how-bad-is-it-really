@@ -44,4 +44,11 @@ export const style = /* CSS */ `
         font-size: 0.7rem;
         color: var(--text-tertiary);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bar,
+        .marker {
+            transition: none;
+        }
+    }
 `;

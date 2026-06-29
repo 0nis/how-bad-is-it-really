@@ -1,0 +1,53 @@
+import { FORECAST_BASE } from "../constants.js";
+
+/**
+ * Fetch today's weather conditions for a coordinate.
+ * Uses the forecast API's past_days=1 to ensure today is always included.
+ *
+ * @param {number} lat Latitude
+ * @param {number} lon Longitude
+ * @returns {Promise<{
+ *   time: string,
+ *   temperature: number,
+ *   apparentTemperature: number,
+ *   humidity: number,
+ *   windSpeed: number,
+ *   precipitation: number,
+ *   cloudCover: number
+ * }[]>}
+ */
+export async function fetchCurrentConditions(lat, lon) {
+  const url = new URL(`${FORECAST_BASE}/forecast`);
+
+  url.searchParams.set("latitude", String(lat));
+  url.searchParams.set("longitude", String(lon));
+
+  url.searchParams.set(
+    "current",
+    [
+      "temperature_2m",
+      "apparent_temperature",
+      "relative_humidity_2m",
+      "wind_speed_10m",
+      "precipitation",
+      "cloud_cover",
+    ].join(","),
+  );
+
+  url.searchParams.set("timezone", "auto");
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Forecast fetch failed: ${res.status}`);
+
+  const data = await res.json();
+
+  return {
+    time: data.current.time,
+    temperature: data.current.temperature_2m,
+    apparentTemperature: data.current.apparent_temperature,
+    humidity: data.current.relative_humidity_2m,
+    windSpeed: data.current.wind_speed_10m,
+    precipitation: data.current.precipitation,
+    cloudCover: data.current.cloud_cover,
+  };
+}

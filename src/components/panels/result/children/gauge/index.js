@@ -18,7 +18,7 @@ class ResultGauge extends HTMLElement {
   setData(result) {
     const clamped = Math.max(-4, Math.min(4, result.sigma));
     const pct = ((clamped + 4) / 8) * 100;
-    const color = this.getColor(result.interpretation.severity);
+    const color = this.getColor(result.severity);
     this.barEl.style.setProperty("--gauge-pct", `${pct}%`);
     this.barEl.style.setProperty("--gauge-color", color);
     this.markerEl.style.left = `${pct}%`;

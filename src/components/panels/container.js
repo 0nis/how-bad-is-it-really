@@ -26,19 +26,18 @@ class PanelContainer extends HTMLElement {
 
   connectedCallback() {
     this.unsubscribe = subscribe((state) => {
-      //   this.loading.hide();
-      //   this.error.hide();
+      this.loading.hide();
+      this.error.hide();
       this.result.hide();
 
       switch (state.status) {
-        // case "loading":
-        //   this.loading.show();
-        //   break;
+        case "loading":
+          this.loading.show(state.selectedLocation.name);
+          break;
 
-        // case "error":
-        //   this.error.setMessage(state.error);
-        //   this.error.show();
-        //   break;
+        case "error":
+          this.error.show(state.error);
+          break;
 
         case "success":
           this.result.setResult(state.analysis);

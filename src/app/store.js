@@ -1,8 +1,135 @@
 const state = {
+  /** @type {"idle" | "loading" | "success" | "error"} */
   status: "idle",
+
+  /**
+   * @type {{
+   *    id: number,
+   *    name: string,
+   *    country: string,
+   *    admin1: string|null,
+   *    admin2: string|null,
+   *    latitude: number,
+   *    longitude: number,
+   *    elevation: number|null,
+   *    timezone: string
+   * } | null}
+   */
   selectedLocation: null,
+
+  /**
+   * @type {{
+   *    datetime: Date,
+   *    location: {
+   *        id: number,
+   *        name: string,
+   *        country: string,
+   *        admin1: string|null,
+   *        admin2: string|null,
+   *        latitude: number,
+   *        longitude: number,
+   *        elevation: number|null,
+   *        timezone: string
+   *    },
+   *    sigma: number;
+   *    percentile: number;
+   *    label: string;
+   *    severity: number;
+   *    frequency: string;
+   *    sampleSize: number;
+   *    observed: {
+   *        temperature: number,
+   *        apparentTemperature: number,
+   *        humidity: number,
+   *        windSpeed: number,
+   *        precipitation: number,
+   *        cloudCover: number
+   *    },
+   *    historical: {
+   *        temperature: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        },
+   *        apparentTemperature?: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        },
+   *        humidity?: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        },
+   *        windSpeed?: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        },
+   *        precipitation?: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        },
+   *        cloudCover?: {
+   *            mean: number,
+   *            std: number,
+   *            count: number
+   *        }
+   *    }
+   * } | null }
+   */
   analysis: null,
+
+  /** @type {string} Error message to display */
   error: null,
+
+  /**
+   * @type {{
+   *    datetime: Date,
+   *    location: {
+   *        id: number,
+   *        name: string,
+   *        country: string,
+   *        admin1: string|null,
+   *        admin2: string|null,
+   *        latitude: number,
+   *        longitude: number,
+   *        elevation: number|null,
+   *        timezone: string
+   *    },
+   *    temperature: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    },
+   *    apparentTemperature?: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    },
+   *    humidity?: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    },
+   *    windSpeed?: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    },
+   *    precipitation?: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    },
+   *    cloudCover?: {
+   *        mean: number,
+   *        std: number,
+   *        count: number
+   *    }
+   * } | null }
+   */
   cachedHistoricalData: null,
 };
 

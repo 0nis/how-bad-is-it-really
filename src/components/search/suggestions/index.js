@@ -83,6 +83,8 @@ class SearchSuggestions extends HTMLElement {
         composed: true,
       }),
     );
+
+    this.listEl.hidden = true;
   }
 
   format(loc) {

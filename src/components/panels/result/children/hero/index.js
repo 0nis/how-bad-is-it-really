@@ -21,14 +21,14 @@ class ResultHero extends HTMLElement {
   setData(result) {
     const isHot = result.sigma >= 0;
     this.pctValueEl.textContent = `${this.getPercentile(isHot, result.percentile)}%`;
-    this.pctValueEl.className = `severity-${result.interpretation.severity}`;
+    this.pctValueEl.className = `severity-${result.severity}`;
     this.pctDescriptorEl.textContent = this.getDescription(
       isHot,
       result.percentile,
       result.location,
     );
-    this.tempDescriptorEl.textContent = result.interpretation.label;
-    this.frequencyEl.textContent = capitalize(result.frequency.label) + ".";
+    this.tempDescriptorEl.textContent = result.label;
+    this.frequencyEl.textContent = capitalize(result.frequency);
   }
 
   getPercentile(isHot, percentile) {

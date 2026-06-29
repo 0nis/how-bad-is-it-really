@@ -27,7 +27,7 @@ class ResultPanel extends HTMLElement {
     this.stats.setData(result);
   }
 
-  show() {
+  show(result) {
     this.hidden = false;
   }
 

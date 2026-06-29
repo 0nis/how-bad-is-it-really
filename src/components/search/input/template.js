@@ -34,13 +34,6 @@ export const template = /* HTML */ `
         aria-autocomplete="list"
         aria-controls="suggestions"
       />
-      <div
-        id="spinner"
-        class="spinner"
-        hidden
-        aria-hidden="true"
-        aria-label="Loading"
-      ></div>
     </div>
     <search-suggestions></search-suggestions>
   </div>
