@@ -4,6 +4,7 @@ import "./error/index.js";
 
 import { renderShadow } from "../../utils/shadow.js";
 import { subscribe } from "../../app/store.js";
+import { getSettings } from "../../app/settings.js";
 
 const template = /* HTML */ `
   <loading-panel hidden></loading-panel>
@@ -32,7 +33,10 @@ class PanelContainer extends HTMLElement {
 
       switch (state.status) {
         case "loading":
-          this.loading.show(state.selectedLocation.name);
+          this.loading.show(
+            state.selectedLocation.name,
+            getSettings().historicalYears,
+          );
           break;
 
         case "error":

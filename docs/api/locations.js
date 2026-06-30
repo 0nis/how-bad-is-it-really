@@ -1,20 +1,12 @@
 import { GEOCODING_BASE } from "../constants.js";
+import { LOCATION } from "../types.js";
 
 /**
  * Search for locations by name using Open-Meteo's geocoding API.
  *
  * @param {string} query Search query
  * @param {number} count Max results to return
- * @returns {Promise<{
- *   name: string,
- *   country: string,
- *   admin1: string|null,
- *   admin2: string|null,
- *   latitude: number,
- *   longitude: number,
- *   elevation: number|null,
- *   timezone: string
- * }[]>}
+ * @returns {Promise<typeof LOCATION[]>}
  */
 export async function searchLocations(query, count = 10) {
   if (!query || query.trim().length < 2) return [];

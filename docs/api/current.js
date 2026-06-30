@@ -1,4 +1,5 @@
 import { FORECAST_BASE } from "../constants.js";
+import { CONDITIONS } from "../types.js";
 
 /**
  * Fetch today's weather conditions for a coordinate.
@@ -8,15 +9,7 @@ import { FORECAST_BASE } from "../constants.js";
  *
  * @param {number} lat Latitude
  * @param {number} lon Longitude
- * @returns {Promise<{
- *   time: string,
- *   temperature: number,
- *   apparentTemperature: number,
- *   humidity: number,
- *   windSpeed: number,
- *   precipitation: number,
- *   cloudCover: number
- * }[]>}
+ * @returns {Promise<typeof CONDITIONS[]>}
  */
 export async function fetchCurrentConditions(lat, lon) {
   const url = new URL(`${FORECAST_BASE}/forecast`);
@@ -44,7 +37,7 @@ export async function fetchCurrentConditions(lat, lon) {
   const data = await res.json();
 
   return {
-    time: data.current.time,
+    datetime: data.current.time,
     temperature: data.current.temperature_2m,
     apparentTemperature: data.current.apparent_temperature,
     humidity: data.current.relative_humidity_2m,

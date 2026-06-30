@@ -3,8 +3,8 @@ export const template = /* HTML */ `
     <div class="inner">
       <div class="spinner" aria-hidden="true"></div>
       <p>
-        Fetching <span id="count"></span> years of climate data for
-        <strong id="location"></strong>…
+        Fetching <span id="count"></span> <span id="count-desc">years</span> of
+        climate data for <strong id="location"></strong>…
       </p>
       <p class="note">
         Pulling from the ERA5 global archive, this may take a while.

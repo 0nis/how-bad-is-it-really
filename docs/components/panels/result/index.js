@@ -9,6 +9,7 @@ import { template } from "./template.js";
 import { renderShadow } from "../../../utils/shadow.js";
 import { HISTORICAL_YEARS } from "../../../constants.js";
 import { formatISO } from "../../../utils/date.js";
+import { APPSTATE } from "../../../types.js";
 
 class ResultPanel extends HTMLElement {
   constructor() {
@@ -26,6 +27,15 @@ class ResultPanel extends HTMLElement {
     this.stats = this.shadowRoot.querySelector("result-stats");
   }
 
+  show() {
+    this.hidden = false;
+  }
+
+  hide() {
+    this.hidden = true;
+  }
+
+  /** @param {typeof APPSTATE.analysis} result */
   setResult(result) {
     this.setDateTime(result.datetime);
     this.setLocation(result.location);
@@ -36,26 +46,21 @@ class ResultPanel extends HTMLElement {
     this.stats.setData(result);
   }
 
+  /** @param {string} datetime ISO 8601 */
   setDateTime(datetime) {
     this.datetimeEl.textContent = formatISO(datetime);
   }
 
+  /** @param {typeof APPSTATE.analysis.location} loc */
   setLocation(loc) {
     this.locationEl.textContent = [loc.name, loc.admin1, loc.country]
       .filter(Boolean)
       .join(", ");
   }
 
+  /** @param {number} sigma */
   setSigma(sigma) {
     this.sigmaEl.textContent = `${sigma > 0 ? "+" : ""}${sigma.toFixed(2)}σ from the ${HISTORICAL_YEARS}-year seasonal mean`;
-  }
-
-  show(result) {
-    this.hidden = false;
-  }
-
-  hide() {
-    this.hidden = true;
   }
 }
 

@@ -3,6 +3,7 @@ import { renderShadow } from "../../../../../utils/shadow.js";
 import { capitalize } from "../../../../../utils/string.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
+import { APPSTATE } from "../../../../../types.js";
 
 class ResultHero extends HTMLElement {
   constructor() {
@@ -17,6 +18,7 @@ class ResultHero extends HTMLElement {
     this.descriptionEl = this.shadowRoot.querySelector("#description");
   }
 
+  /** @param {typeof APPSTATE.analysis} result */
   setData(result) {
     this.labelEl.textContent = result.label;
     this.labelEl.className = `severity-${result.severity}`;
@@ -30,6 +32,11 @@ class ResultHero extends HTMLElement {
     );
   }
 
+  /**
+   * @param {number} sigma sigma
+   * @param {number} pct percentile
+   * @param {string} loc location name
+   */
   getDescription(sigma, pct, loc) {
     if (sigma > 0)
       return `Hotter than ${pct.toFixed(pct >= 99 ? 1 : 0)}% of days like this in ${loc}`;

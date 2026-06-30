@@ -7,6 +7,7 @@ import {
 } from "../../../../../utils/weather.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
+import { APPSTATE } from "../../../../../types.js";
 
 class ResultStats extends HTMLElement {
   constructor() {
@@ -55,6 +56,7 @@ class ResultStats extends HTMLElement {
     };
   }
 
+  /** @param {typeof APPSTATE.analysis} result */
   setData(result) {
     for (const key in this.metrics) {
       const m = this.metrics[key];

@@ -2,6 +2,7 @@ import { globalSheet } from "../../../../../styles/sheets/global.js";
 import { renderShadow } from "../../../../../utils/shadow.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
+import { APPSTATE } from "../../../../../types.js";
 
 class ResultGauge extends HTMLElement {
   constructor() {
@@ -15,6 +16,7 @@ class ResultGauge extends HTMLElement {
     this.markerEl = this.shadowRoot.querySelector(".marker");
   }
 
+  /** @param {typeof APPSTATE.analysis} result */
   setData(result) {
     const clamped = Math.max(-4, Math.min(4, result.sigma));
     const norm = clamped / 4;
@@ -29,6 +31,7 @@ class ResultGauge extends HTMLElement {
     this.markerEl.style.left = `${pct}%`;
   }
 
+  /** @param {number} severity */
   getColor(severity) {
     const colors = [
       "var(--gauge-normal)",

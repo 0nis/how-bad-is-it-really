@@ -1,7 +1,9 @@
+import { STATS } from "../types.js";
+
 /**
  * Given an array of daily temperature values,compute mean and standard deviation.
  * @param {number[]} values
- * @returns {{ mean: number, std: number, count: number }}
+ * @returns {typeof STATS}
  */
 export function computeStats(values) {
   const count = values.length;

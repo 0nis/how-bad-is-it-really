@@ -15,8 +15,9 @@ class ErrorPanel extends HTMLElement {
     this.messageEl = this.shadowRoot.querySelector("#message");
   }
 
-  show(errorMessage) {
-    this.messageEl.textContent = errorMessage;
+  /** @param {string} msg error message to show the user */
+  show(msg) {
+    this.messageEl.textContent = msg;
     this.hidden = false;
   }
 

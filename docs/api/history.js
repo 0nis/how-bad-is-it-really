@@ -1,5 +1,6 @@
 import { ARCHIVE_BASE } from "../constants.js";
 import { fetchWithRetry } from "./fetch.js";
+import { CONDITIONS } from "../types.js";
 
 /**
  * Fetch hourly historical weather conditions over a date range for a coordinate.
@@ -9,15 +10,7 @@ import { fetchWithRetry } from "./fetch.js";
  * @param {number} lon Longitude
  * @param {number} startDate Show hourly results starting from this date
  * @param {number} endDate Show hourly results until this date
- * @returns {Promise<{
- *   time: string,
- *   temperature: number,
- *   apparentTemperature: number,
- *   humidity: number,
- *   windSpeed: number,
- *   precipitation: number,
- *   cloudCover: number,
- * }[]>}
+ * @returns {Promise<typeof CONDITIONS[]>}
  */
 export async function fetchHistoricalWeather(lat, lon, startDate, endDate) {
   const url = new URL(`${ARCHIVE_BASE}/archive`);
@@ -52,7 +45,7 @@ export async function fetchHistoricalWeather(lat, lon, startDate, endDate) {
 
   for (let i = 0; i < h.time.length; i++) {
     hours.push({
-      time: h.time[i],
+      datetime: h.time[i],
       temperature: h.temperature_2m[i],
       apparentTemperature: h.apparent_temperature[i],
       humidity: h.relative_humidity_2m[i],

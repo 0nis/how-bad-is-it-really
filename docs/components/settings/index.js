@@ -7,6 +7,7 @@ import {
 import { setState, subscribe } from "../../app/store.js";
 import { globalSheet } from "../../styles/sheets/global.js";
 import { renderShadow } from "../../utils/shadow.js";
+import { pluralize } from "../../utils/string.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
 
@@ -159,8 +160,7 @@ class SiteSettings extends HTMLElement {
 
   formatValue(value, unitLabel, prefix) {
     const n = Number(value);
-    const plural = n === 1 || !unitLabel ? "" : "s";
-    return `${prefix ?? ""}${n} ${unitLabel ?? ""}${plural}`;
+    return `${prefix ?? ""}${n}${unitLabel ? ` ${pluralize(unitLabel, n)}` : ""}`;
   }
 }
 
