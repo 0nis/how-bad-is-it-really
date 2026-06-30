@@ -2,17 +2,29 @@ export const template = /* HTML */ `
   <header>
     <div class="top">
       <div class="logo">σ°</div>
-      <button
-        id="settings-trigger"
-        class="settings-trigger"
-        type="button"
-        aria-haspopup="true"
-        aria-expanded="false"
-        aria-controls="settings-panel"
-        title="Settings"
-      >
-        <img src="./assets/icons/settings.svg" alt="Settings" />
-      </button>
+      <div class="actions">
+        <a
+          class="github-link"
+          href="https://github.com/0nis/how-bad-is-it"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View source on GitHub"
+          title="GitHub"
+        >
+          <img src="./assets/icons/github.svg" alt="Github logo" />
+        </a>
+        <button
+          id="settings-trigger"
+          class="settings-trigger"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="settings-panel"
+          title="Settings"
+        >
+          <img src="./assets/icons/settings.svg" alt="Settings" />
+        </button>
+      </div>
     </div>
     <h1 class="title">How bad is it, really?</h1>
     <p class="subtitle">

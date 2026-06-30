@@ -36,9 +36,13 @@ export const style = /* CSS */ `
         margin: 0 auto;
     }
 
-    .settings-trigger {
+    .actions {
         grid-column: 3;
         justify-self: end;
+        display: flex;
+        gap: 0.5rem;
+    }
+    .actions > * {
         width: 36px;
         height: 36px;
         display: flex;
@@ -49,6 +53,26 @@ export const style = /* CSS */ `
         border-radius: var(--r-sm);
         color: var(--text-secondary);
         cursor: pointer;
+    }
+
+    .github-link {
+        transition: color 0.15s, border-color 0.15s, transform 0.4s ease;
+        text-decoration: none;
+    }
+    .github-link:hover {
+        color: var(--text-primary);
+        border-color: var(--accent-dim);
+    }
+    .github-link:active {
+        transform: scale(0.94);
+    }
+    .github-link img {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .settings-trigger {
         transition: color 0.15s, border-color 0.15s, transform 0.4s ease;
     }
     
