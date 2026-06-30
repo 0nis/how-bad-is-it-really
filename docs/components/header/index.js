@@ -1,3 +1,4 @@
+import { getSettings, subscribeToSettings } from "../../app/settings.js";
 import { getState, setState, subscribe } from "../../app/store.js";
 import { globalSheet } from "../../styles/sheets/global.js";
 import { renderShadow } from "../../utils/shadow.js";
@@ -13,27 +14,50 @@ class SiteHeader extends HTMLElement {
 
   connectedCallback() {
     this.render();
-
-    this.settingsTrigger = this.shadowRoot.querySelector("#settings-trigger");
-
-    this.settingsTrigger.addEventListener("click", () => {
-      setState({ settingsOpen: !getState().settingsOpen });
-    });
-
-    this.unsubscribe = subscribe((state) => {
-      if (state.settingsOpen)
-        this.settingsTrigger.setAttribute("aria-expanded", "true");
-      else if (!state.settingsOpen)
-        this.settingsTrigger.setAttribute("aria-expanded", "false");
-    });
+    this.initSettings();
+    this.initUnits();
   }
 
   disconnectedCallback() {
-    this.unsubscribe?.();
+    this.unsubscribeState?.();
+    this.unsubscribeSettings?.();
   }
 
   render() {
     renderShadow(this.shadowRoot, template, style);
+  }
+
+  initSettings() {
+    const settingsTrigger = this.shadowRoot.querySelector("#settings-trigger");
+
+    settingsTrigger.addEventListener("click", () => {
+      setState({ settingsOpen: !getState().settingsOpen });
+    });
+
+    this.unsubscribeState = subscribe((state) => {
+      if (state.settingsOpen)
+        settingsTrigger.setAttribute("aria-expanded", "true");
+      else if (!state.settingsOpen)
+        settingsTrigger.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  initUnits() {
+    this.setUnits();
+    this.unsubscribeSettings = subscribeToSettings((settings) => {
+      this.setUnits();
+    });
+  }
+
+  setUnits() {
+    const system = getSettings().unitSystem;
+    const values = [
+      { system: "metric", value: "30°C" },
+      { system: "imperial", value: "90°F" },
+    ];
+    this.shadowRoot.querySelectorAll(".example-unit").forEach((unit) => {
+      unit.textContent = values.find((v) => v.system === system).value;
+    });
   }
 }
 

@@ -16,8 +16,9 @@ export const template = /* HTML */ `
     </div>
     <h1 class="title">How bad is it, really?</h1>
     <p class="subtitle">
-      30°C in Helsinki isn't 30°C in Bangkok. Search any city to see how extreme
-      its temperature truly is, compared to what's normal
+      <span class="example-unit">30°C</span> in Helsinki isn't
+      <span class="example-unit">30°C</span> in Bangkok. Search any city to see
+      how extreme its temperature truly is, compared to what's normal
       <em>there</em>.
     </p>
   </header>

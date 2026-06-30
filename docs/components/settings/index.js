@@ -79,6 +79,24 @@ class SiteSettings extends HTMLElement {
       });
   }
 
+  initReset() {
+    this.shadowRoot.querySelector("#reset").addEventListener("click", () => {
+      resetSettings();
+      this.renderFromSettings(getSettings());
+    });
+  }
+
+  renderFromSettings(settings) {
+    this.renderUnitSelector(settings);
+    this.renderSliders(settings);
+  }
+
+  renderUnitSelector(settings) {
+    this.panel.querySelectorAll("input[name=unit-system]").forEach((input) => {
+      input.checked = input.value === settings.unitSystem;
+    });
+  }
+
   initSliders() {
     this.applyBounds(
       "setting-historical-years",
@@ -92,19 +110,7 @@ class SiteSettings extends HTMLElement {
     this.bindSlider("setting-window-hours", "windowHours", "hr");
   }
 
-  initReset() {
-    this.shadowRoot.querySelector("#reset").addEventListener("click", () => {
-      resetSettings();
-      this.renderFromSettings(getSettings());
-    });
-  }
-
-  renderFromSettings(settings) {
-    const radio = document.querySelector(
-      `input[name="unit-system"][value="${settings.unitSystem}"]`,
-    );
-    if (radio) radio.checked = true;
-
+  renderSliders(settings) {
     this.setSliderValue(
       "setting-historical-years",
       settings.historicalYears,
