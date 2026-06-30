@@ -1,3 +1,4 @@
+// TODO: Edit footer since users can now modify these values
 export const template = /* HTML */ `
   <footer>
     <p>

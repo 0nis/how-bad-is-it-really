@@ -143,6 +143,9 @@ const state = {
    * } | null }
    */
   cachedHistoricalData: null,
+
+  /** @type {boolean} */
+  settingsOpen: false,
 };
 
 const listeners = new Set();
