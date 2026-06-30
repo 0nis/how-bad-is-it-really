@@ -7,9 +7,9 @@ import { globalSheet } from "../../../styles/sheets/global.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
 import { renderShadow } from "../../../utils/shadow.js";
-import { HISTORICAL_YEARS } from "../../../constants.js";
 import { formatISO } from "../../../utils/date.js";
 import { APPSTATE } from "../../../types.js";
+import { subscribeToSettings } from "../../../app/settings.js";
 
 class ResultPanel extends HTMLElement {
   constructor() {
@@ -27,6 +27,17 @@ class ResultPanel extends HTMLElement {
     this.stats = this.shadowRoot.querySelector("result-stats");
   }
 
+  connectedCallback() {
+    this.unsubscribe = subscribeToSettings((settings) => {
+      if (!this._result) return;
+      this.stats.setData(this._result, settings.unitSystem);
+    });
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe?.();
+  }
+
   show() {
     this.hidden = false;
   }
@@ -37,13 +48,15 @@ class ResultPanel extends HTMLElement {
 
   /** @param {typeof APPSTATE.analysis} result */
   setResult(result) {
+    this._result = result;
+
     this.setDateTime(result.datetime);
     this.setLocation(result.location);
-    this.setSigma(result.sigma);
+    this.setSigma(result.sigma, result.settings.historicalYears);
 
     this.hero.setData(result);
     this.gauge.setData(result);
-    this.stats.setData(result);
+    this.stats.setData(result, result.settings.unitSystem);
   }
 
   /** @param {string} datetime ISO 8601 */
@@ -58,9 +71,12 @@ class ResultPanel extends HTMLElement {
       .join(", ");
   }
 
-  /** @param {number} sigma */
-  setSigma(sigma) {
-    this.sigmaEl.textContent = `${sigma > 0 ? "+" : ""}${sigma.toFixed(2)}σ from the ${HISTORICAL_YEARS}-year seasonal mean`;
+  /**
+   * @param {number} sigma
+   * @param {number} historicalYears as defined in settings
+   */
+  setSigma(sigma, historicalYears) {
+    this.sigmaEl.textContent = `${sigma > 0 ? "+" : ""}${sigma.toFixed(2)}σ from the ${historicalYears}-year seasonal mean`;
   }
 }
 

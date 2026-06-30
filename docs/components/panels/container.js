@@ -26,29 +26,32 @@ class PanelContainer extends HTMLElement {
   }
 
   connectedCallback() {
-    this.unsubscribe = subscribe((state) => {
-      this.loading.hide();
-      this.error.hide();
-      this.result.hide();
+    this.unsubscribe = subscribe(
+      (state) => state.status,
+      (status, state) => {
+        this.loading.hide();
+        this.error.hide();
+        this.result.hide();
 
-      switch (state.status) {
-        case "loading":
-          this.loading.show(
-            state.selectedLocation.name,
-            getSettings().historicalYears,
-          );
-          break;
+        switch (status) {
+          case "loading":
+            this.loading.show(
+              state.selectedLocation.name,
+              getSettings().historicalYears,
+            );
+            break;
 
-        case "error":
-          this.error.show(state.error);
-          break;
+          case "error":
+            this.error.show(state.error);
+            break;
 
-        case "success":
-          this.result.setResult(state.analysis);
-          this.result.show();
-          break;
-      }
-    });
+          case "success":
+            this.result.setResult(state.analysis);
+            this.result.show();
+            break;
+        }
+      },
+    );
   }
 
   disconnectedCallback() {

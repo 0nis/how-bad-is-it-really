@@ -21,13 +21,13 @@ class ResultStats extends HTMLElement {
       temperature: {
         row: "#temp",
         id: "temperature",
-        format: formatTemp,
+        format: (v, unitSystem) => formatTemp(v, unitSystem),
       },
 
       feels: {
         row: "#feels",
         id: "apparentTemperature",
-        format: formatTemp,
+        format: (v, unitSystem) => formatTemp(v, unitSystem),
       },
 
       humidity: {
@@ -39,13 +39,13 @@ class ResultStats extends HTMLElement {
       precipitation: {
         row: "#prec",
         id: "precipitation",
-        format: formatPrecipitation,
+        format: (v, unitSystem) => formatPrecipitation(v, unitSystem),
       },
 
       wind: {
         row: "#wind",
         id: "wind",
-        format: formatWind,
+        format: (v, unitSystem) => formatWind(v, unitSystem),
       },
 
       cloudCover: {
@@ -56,8 +56,11 @@ class ResultStats extends HTMLElement {
     };
   }
 
-  /** @param {typeof APPSTATE.analysis} result */
-  setData(result) {
+  /**
+   * @param {typeof APPSTATE.analysis} result
+   * @param {"metric" | "imperial"} unitSystem
+   */
+  setData(result, unitSystem = "metric") {
     for (const key in this.metrics) {
       const m = this.metrics[key];
 
@@ -78,7 +81,9 @@ class ResultStats extends HTMLElement {
         continue;
       }
 
-      const fmt = m.format;
+      const fmt = () => {
+        return m.format(observed, unitSystem);
+      };
 
       row.querySelector("[data-now]").textContent = fmt(observed);
       row.querySelector("[data-mean]").textContent = fmt(mean);

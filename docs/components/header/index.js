@@ -34,12 +34,14 @@ class SiteHeader extends HTMLElement {
       setState({ settingsOpen: !getState().settingsOpen });
     });
 
-    this.unsubscribeState = subscribe((state) => {
-      if (state.settingsOpen)
-        settingsTrigger.setAttribute("aria-expanded", "true");
-      else if (!state.settingsOpen)
-        settingsTrigger.setAttribute("aria-expanded", "false");
-    });
+    this.unsubscribeState = subscribe(
+      (state) => state.settingsOpen,
+      (settingsOpen) => {
+        if (settingsOpen) settingsTrigger.setAttribute("aria-expanded", "true");
+        else if (!settingsOpen)
+          settingsTrigger.setAttribute("aria-expanded", "false");
+      },
+    );
   }
 
   initUnits() {

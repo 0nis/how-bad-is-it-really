@@ -1,9 +1,4 @@
 import { DEFAULT_SETTINGS } from "../../app/settings.js";
-import {
-  HISTORICAL_YEARS,
-  WINDOW_DAYS,
-  WINDOW_HOURS,
-} from "../../constants.js";
 
 export const template = /* HTML */ `
   <div id="overlay" class="overlay" hidden></div>

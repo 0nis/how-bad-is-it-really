@@ -32,10 +32,13 @@ class SiteSettings extends HTMLElement {
         setState({ settingsOpen: false });
     });
 
-    this.unsubscribe = subscribe((state) => {
-      if (state.settingsOpen) this.open();
-      else if (!state.settingsOpen) this.close();
-    });
+    this.unsubscribe = subscribe(
+      (state) => state.settingsOpen,
+      (settingsOpen) => {
+        if (settingsOpen) this.open();
+        else if (!settingsOpen) this.close();
+      },
+    );
 
     this.init();
   }
@@ -63,11 +66,11 @@ class SiteSettings extends HTMLElement {
   }
 
   init() {
+    this.renderFromSettings(getSettings());
+
     this.initUnitSelector();
     this.initSliders();
     this.initReset();
-
-    this.renderFromSettings(getSettings());
   }
 
   initUnitSelector() {

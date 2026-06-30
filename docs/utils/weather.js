@@ -2,12 +2,11 @@
  * Formats temperature to 1 decimal point, defaulting to °C
  *
  * @param {number} valueC value in °C
- * @param {"C" | "F} unit celsius or fahrenheit
+ * @param {"metric" | "imperial"} unitSystem metric or imperial
  * @returns {string} Formatted temperature
  */
-export function formatTemp(valueC, unit = "C") {
-  unit = isUSA() ? "F" : "C"; // TODO: TEMP
-  if (unit === "F") return `${cToF(Number(valueC)).toFixed(1)}°F`;
+export function formatTemp(valueC, unitSystem = "metric") {
+  if (unitSystem === "imperial") return `${cToF(Number(valueC)).toFixed(1)}°F`;
   return `${Number(valueC).toFixed(1)}°C`;
 }
 
@@ -15,12 +14,12 @@ export function formatTemp(valueC, unit = "C") {
  * Formats precipitation to 1 decimal point, defaulting to mm
  *
  * @param {number} valueMM value in mm
- * @param {"mm" | "in"} unit millimeters or inches
+ * @param {"metric" | "imperial"} unitSystem metric or imperial
  * @returns {string} Formatted precipitation
  */
-export function formatPrecipitation(value, unit = "mm") {
-  unit = isUSA() ? "in" : "mm"; // TODO: TEMP
-  if (unit === "in") return `${mmToIn(Number(value)).toFixed(1)} in.`;
+export function formatPrecipitation(value, unitSystem = "metric") {
+  if (unitSystem === "imperial")
+    return `${mmToIn(Number(value)).toFixed(1)} in.`;
   return `${Number(value).toFixed(1)} mm`;
 }
 
@@ -28,12 +27,12 @@ export function formatPrecipitation(value, unit = "mm") {
  * Formats wind speed to 1 decimal point, defaulting to km/h
  *
  * @param {number} value value in km/h
- * @param {"kmh" | "mph"} unit kilometers per hour or miles per hour
+ * @param {"metric" | "imperial"} unitSystem metric or imperial
  * @returns {string} Formatted wind speed
  */
-export function formatWind(value, unit = "kmh") {
-  unit = isUSA() ? "mph" : "kmh"; // TODO: TEMP
-  if (unit === "mph") return `${kmhToMph(Number(value)).toFixed(1)} mph.`;
+export function formatWind(value, unitSystem = "metric") {
+  if (unitSystem === "imperial")
+    return `${kmhToMph(Number(value)).toFixed(1)} mph.`;
   return `${Number(value).toFixed(1)} km/h.`;
 }
 
@@ -59,14 +58,4 @@ export function mmToIn(mm) {
  */
 export function kmhToMph(kmh) {
   return kmh * 0.621371;
-}
-
-// TODO: Temp until I make this an explicit setting
-// I'm very aware that this is *not* perfect lol I have my locale set to en-US despite being in NL
-function isUSA() {
-  return (
-    Intl.DateTimeFormat(navigator.language, {
-      temperature: "numeric",
-    }).resolvedOptions?.()?.locale === "en-US"
-  );
 }
