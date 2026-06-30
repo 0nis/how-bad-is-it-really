@@ -17,9 +17,6 @@ class SiteFooter extends HTMLElement {
 
   connectedCallback() {
     renderShadow(this.shadowRoot, template, style);
-    this.shadowRoot.querySelector("#day-window").textContent = WINDOW_DAYS;
-    this.shadowRoot.querySelector("#hour-window").textContent = WINDOW_HOURS;
-    this.shadowRoot.querySelector("#years").textContent = HISTORICAL_YEARS;
   }
 }
 
