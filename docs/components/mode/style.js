@@ -17,7 +17,7 @@ modeSheet.replaceSync(/* CSS */ `
         gap: 0.75rem;
     }
 
-    .-field {
+    .field {
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
