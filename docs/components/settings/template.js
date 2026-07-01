@@ -19,7 +19,7 @@ export const template = /* HTML */ `
     </div>
 
     <div class="section">
-      <label class="section-label">Units</label>
+      <label for="setting-units" class="section-label">Units</label>
       <segmented-input id="setting-units"></segmented-input>
     </div>
 
