@@ -7,7 +7,7 @@ import { modeSheet } from "../../style.js";
 import { setYearCount } from "../helpers.js";
 import { template } from "./template.js";
 
-class ModePastPanel extends HTMLElement {
+class ModeCurrentPanel extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -17,10 +17,10 @@ class ModePastPanel extends HTMLElement {
   connectedCallback() {
     renderShadow(this.shadowRoot, template);
 
-    this.unsubscribe = subscribe(
+    this.unsubscribeState = subscribe(
       (state) => state.mode,
       (mode) => {
-        this.hidden = mode !== "past";
+        this.hidden = mode !== "current";
       },
     );
 
@@ -31,9 +31,9 @@ class ModePastPanel extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.unsubscribe?.();
+    this.unsubscribeState?.();
     this.unsubscribeSettings?.();
   }
 }
 
-customElements.define("past-panel", ModePastPanel);
+customElements.define("current-panel", ModeCurrentPanel);

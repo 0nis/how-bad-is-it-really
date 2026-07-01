@@ -1,4 +1,4 @@
-import { panelSheet } from "../../../styles/sheets/panel.js";
+import { panelSheet } from "../style.js";
 import { globalSheet } from "../../../styles/sheets/global.js";
 import { template } from "./template.js";
 import { renderShadow } from "../../../utils/shadow.js";

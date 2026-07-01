@@ -3,12 +3,22 @@ import { DEFAULT_SETTINGS } from "./settings.js";
 
 /** @type {typeof APPSTATE} */
 const state = {
-  status: "idle",
   selectedLocation: null,
+  mode: "current",
+  options: {
+    past: {
+      date: null,
+      comparison: null,
+    },
+    manual: {
+      temperature: null,
+      comparison: null,
+    },
+  },
+  status: "idle",
   analysis: null,
   error: null,
   settingsOpen: false,
-  mode: "current",
 };
 
 const listeners = new Set();

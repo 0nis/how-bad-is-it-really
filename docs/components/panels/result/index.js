@@ -2,7 +2,7 @@ import "./children/hero/index.js";
 import "./children/gauge/index.js";
 import "./children/stats/index.js";
 
-import { panelSheet } from "../../../styles/sheets/panel.js";
+import { panelSheet } from "../style.js";
 import { globalSheet } from "../../../styles/sheets/global.js";
 import { style } from "./style.js";
 import { template } from "./template.js";

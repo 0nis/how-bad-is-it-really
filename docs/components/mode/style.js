@@ -11,6 +11,21 @@ modeSheet.replaceSync(/* CSS */ `
         gap: 1rem;
     }
 
+    .actions { 
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .actions > * {
+        align-self: center;
+    }
+
+    .description {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
     .fields {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -72,27 +87,5 @@ modeSheet.replaceSync(/* CSS */ `
     }
     input[type="number"] {
         -moz-appearance: textfield;
-    }
-
-    .analyse-btn {
-        align-self: flex-start;
-        background: var(--accent);
-        color: #0f0f13;
-        border: none;
-        border-radius: var(--r-sm);
-        padding: 0.55rem 1.25rem;
-        font-family: var(--font-body);
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition:
-            opacity 0.15s,
-            transform 0.1s;
-    }
-    .analyse-btn:hover {
-        opacity: 0.9;
-    }
-    .analyse-btn:active {
-        transform: scale(0.97);
     }
 `);

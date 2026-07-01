@@ -3,7 +3,7 @@ import "./loading/index.js";
 import "./error/index.js";
 
 import { renderShadow } from "../../utils/shadow.js";
-import { subscribe } from "../../app/store.js";
+import { setState, subscribe } from "../../app/store.js";
 import { getSettings } from "../../app/settings.js";
 
 const template = /* HTML */ `
@@ -26,15 +26,14 @@ class PanelContainer extends HTMLElement {
   }
 
   connectedCallback() {
-    this.unsubscribe = subscribe(
+    this.unsubscribeStatus = subscribe(
       (state) => state.status,
       (status, state) => {
-        this.loading.hide();
-        this.error.hide();
-        this.result.hide();
+        this.hide();
 
         switch (status) {
           case "loading":
+            this.hidden = false;
             this.loading.show(
               state.selectedLocation.name,
               getSettings().historicalYears,
@@ -42,20 +41,37 @@ class PanelContainer extends HTMLElement {
             break;
 
           case "error":
+            this.hidden = false;
             this.error.show(state.error);
             break;
 
           case "success":
+            this.hidden = false;
             this.result.setResult(state.analysis);
             this.result.show();
             break;
         }
       },
     );
+
+    this.unsubscribeMode = subscribe(
+      (state) => state.mode,
+      () => {
+        setState({ status: "idle" });
+      },
+    );
+  }
+
+  hide() {
+    this.hidden = true;
+    this.loading.hide();
+    this.error.hide();
+    this.result.hide();
   }
 
   disconnectedCallback() {
-    this.unsubscribe?.();
+    this.unsubscribeStatus?.();
+    this.unsubscribeMode?.();
   }
 }
 

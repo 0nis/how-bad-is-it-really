@@ -1,7 +1,7 @@
 import { fetchCurrentConditions } from "../api/current.js";
 import { fetchHistoricalWeather } from "../api/history.js";
 import { getHourFromISO, shiftDays, toDateStr } from "../utils/date.js";
-import { setState } from "../app/store.js";
+import { getState, setState } from "../app/store.js";
 import { toChunks } from "../utils/objects.js";
 import {
   computeStats,
@@ -12,29 +12,16 @@ import {
   toSigma,
 } from "./calculation.js";
 import { getSettings, DEFAULT_SETTINGS } from "../app/settings.js";
-import { LOCATION, CONDITIONS } from "../types.js";
+import { LOCATION, CONDITIONS, HISTORICAL, APPSTATE } from "../types.js";
 
-/**
- * Fetches the current weather conditions for the given location and runs {@link runAnalysis} on them.
- *
- * @param {typeof LOCATION} location
- */
-export async function runAnalysisForCurrentConditions(location) {
-  await runAnalysis(
-    location,
-    await fetchCurrentConditions(location.latitude, location.longitude),
-  );
-}
-
-/**
- * Analyzes the past weather conditions for the given location and compares them to the given conditions.
- * Updates the store with the analysis results.
- *
- * @param {typeof LOCATION} location
- * @param {typeof CONDITIONS} conditions
- */
-export async function runAnalysis(location, conditions) {
+export async function runAnalysis() {
   try {
+    const state = getState();
+    const settings = getSettings();
+    const location = state.selectedLocation;
+
+    if (!location) throw new Error("Please select a location first!");
+
     setState({
       status: "loading",
       location,
@@ -42,45 +29,43 @@ export async function runAnalysis(location, conditions) {
       analysis: null,
     });
 
-    const settings = getSettings();
+    /**
+     * @type {{
+     *   conditions: typeof CONDITIONS,
+     *   readings: typeof CONDITIONS[]
+     * }}
+     */
+    let data = {
+      conditions: null,
+      readings: null,
+    };
 
-    const historicalReadings = await fetchHistoricalWindow(
-      location.latitude,
-      location.longitude,
-      conditions.datetime,
-      settings,
-    );
-
-    const targetHour = getHourFromISO(conditions.datetime);
-    const windowedReadings = historicalReadings.filter((r) => {
-      const hour = getHourFromISO(r.datetime);
-      return Math.abs(hour - targetHour) <= settings.windowHours;
-    });
-    if (windowedReadings.length < settings.minReadings) {
-      setState({
-        status: "error",
-        error: "Not enough historical data for this location and time of day.",
-      });
-      return;
+    switch (state.mode) {
+      case "current":
+        data = await runAnalysisCurrent(state, settings, location);
+        break;
+      case "past":
+        data = await runAnalysisPast(state, settings, location);
+        break;
+      case "manual":
+        data = await runAnalysisManual(state, settings, location);
+        break;
+      default:
+        throw new Error("Unknown mode: " + mode);
     }
 
+    const { conditions, readings } = data;
+    if (!conditions) throw new Error("Failed to fetch conditions");
+    if (!readings) throw new Error("Failed to fetch readings");
+
+    // prettier-ignore
     const stats = {
-      temperature: computeStats(windowedReadings.map((r) => r.temperature)),
-      apparentTemperature: computeStats(
-        windowedReadings.map((r) => r.apparentTemperature).filter(Boolean),
-      ),
-      humidity: computeStats(
-        windowedReadings.map((r) => r.humidity).filter(Boolean),
-      ),
-      windSpeed: computeStats(
-        windowedReadings.map((r) => r.windSpeed).filter(Boolean),
-      ),
-      precipitation: computeStats(
-        windowedReadings.map((r) => r.precipitation).filter(Boolean),
-      ),
-      cloudCover: computeStats(
-        windowedReadings.map((r) => r.cloudCover).filter(Boolean),
-      ),
+      temperature: computeStats(readings.map((r) => r.temperature)),
+      apparentTemperature: computeStats(readings.map((r) => r.apparentTemperature).filter(Boolean)),
+      humidity: computeStats(readings.map((r) => r.humidity).filter(Boolean)),
+      windSpeed: computeStats(readings.map((r) => r.windSpeed).filter(Boolean)),
+      precipitation: computeStats(readings.map((r) => r.precipitation).filter(Boolean)),
+      cloudCover: computeStats(readings.map((r) => r.cloudCover).filter(Boolean)),
     };
 
     const useApparentTemp =
@@ -97,7 +82,7 @@ export async function runAnalysis(location, conditions) {
       tempStats.std,
     );
 
-    const cloudCoverStats = setState({
+    setState({
       status: "success",
       location: location,
       analysis: {
@@ -124,6 +109,76 @@ export async function runAnalysis(location, conditions) {
     });
     console.error(err);
   }
+}
+
+/**
+ * @param {typeof APPSTATE} state
+ * @param {typeof DEFAULT_SETTINGS} settings
+ * @returns {{
+ *   conditions: typeof CONDITIONS,
+ *   readings: typeof CONDITIONS[]
+ * }}
+ */
+async function runAnalysisCurrent(state, settings, location) {
+  const conditions = await fetchCurrentConditions(
+    location.latitude,
+    location.longitude,
+  );
+
+  const historicalReadings = await fetchHistoricalWindow(
+    location.latitude,
+    location.longitude,
+    conditions.datetime,
+    settings,
+  );
+
+  const targetHour = getHourFromISO(conditions.datetime);
+  const windowedReadings = historicalReadings.filter((r) => {
+    const hour = getHourFromISO(r.datetime);
+    return Math.abs(hour - targetHour) <= settings.windowHours;
+  });
+  if (windowedReadings.length < settings.minReadings) {
+    setState({
+      status: "error",
+      error: "Not enough historical data for this location and time of day.",
+    });
+    return;
+  }
+
+  return {
+    conditions,
+    readings: windowedReadings,
+  };
+}
+
+/**
+ * @param {typeof APPSTATE} state
+ * @param {typeof DEFAULT_SETTINGS} settings
+ * @returns {{
+ *   conditions: typeof CONDITIONS,
+ *   readings: typeof CONDITIONS[]
+ * }}
+ */
+async function runAnalysisPast(state, settings, location) {
+  // conditions = await fetchPastConditions(
+  //   state.options.past.date,
+  //   state.options.past.comparison,
+  //   location.latitude,
+  //   location.longitude,
+  // );
+  throw new Error("Not implemented");
+}
+
+/**
+ * @param {typeof APPSTATE} state
+ * @param {typeof DEFAULT_SETTINGS} settings
+ * @returns {{
+ *   conditions: typeof CONDITIONS,
+ *   readings: typeof CONDITIONS[]
+ * }}
+ */
+async function runAnalysisManual(state, settings, location) {
+  throw new Error("Not implemented");
 }
 
 /**

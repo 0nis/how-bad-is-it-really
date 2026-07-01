@@ -1,3 +1,5 @@
+import { DEFAULT_SETTINGS } from "../../../../app/settings.js";
+
 export const template = /* HTML */ `
   <div id="panel" class="panel">
     <div class="fields">
@@ -33,6 +35,14 @@ export const template = /* HTML */ `
         <input id="date" type="date" class="input" />
       </div>
     </div>
-    <button id="analyse-btn" class="analyse-btn">Analyse</button>
+    <div class="actions">
+      <p class="description">
+        Tests any raw air temperature against the all-time highest or lowest
+        records for this location over the past
+        <span id="year-count">${DEFAULT_SETTINGS.historicalYears}</span>
+        <span id="year-count-desc">years</span>.
+      </p>
+      <start-analysis-button disabled></start-analysis-button>
+    </div>
   </div>
 `;

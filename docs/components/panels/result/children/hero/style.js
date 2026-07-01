@@ -11,7 +11,7 @@ export const style = /* CSS */ `
 
     #label {
         font-family: var(--font-mono);
-        wrap: no-wrap;
+        white-space: nowrap;
         font-size: clamp(2rem, 20cqw, 6rem);
         font-weight: 700;
         letter-spacing: -0.04em;

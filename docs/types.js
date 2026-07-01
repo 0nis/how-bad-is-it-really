@@ -2,11 +2,22 @@
 
 /**
  * @typedef {Object} AppState
- *
- * @property {"idle" | "loading" | "success" | "error"} status
+ 
  * @property {typeof LOCATION | null} selectedLocation
+ * @property {"current" | "past" | "manual"} mode
+ * @property {{
+ *    past: {
+ *      date: Date,
+ *      comparison: "min" | "max"
+ *    },
+ *    manual: {
+ *      temperature: number,
+ *      comparison: "min" | "max"
+ *    }
+ * }} options Mode options
+ * @property {"idle" | "loading" | "success" | "error"} status Status of the analysis process
  * @property {string} error Error message to display
- * @property {boolean} settingsOpen
+ * @property {boolean} settingsOpen Whether the settings panel is open
  * @property {{
  *    datetime: string,
  *    timezone: string,
@@ -29,7 +40,6 @@
  * - windSpeed: km/h
  * - precipitation: mm
  * - cloud cover: %
- * @property {"current" | "manual"} mode
  */
 
 /** @type {AppState} */
@@ -52,7 +62,7 @@ export const LOCATION = {};
 
 /**
  * @type {{
- *   datetime: string,
+ *   datetime?: string,
  *   temperature?: number,
  *   apparentTemperature?: number,
  *   humidity?: number,

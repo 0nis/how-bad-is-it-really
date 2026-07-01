@@ -1,6 +1,8 @@
 import "./toggle/index.js";
+import "./panels/current/index.js";
 import "./panels/manual/index.js";
 import "./panels/past/index.js";
+import "./start/index.js";
 
 import { globalSheet } from "../../styles/sheets/global.js";
 import { renderShadow } from "../../utils/shadow.js";
@@ -8,8 +10,9 @@ import { renderShadow } from "../../utils/shadow.js";
 const template = /* HTML */ `
   <div id="container">
     <mode-toggle></mode-toggle>
-    <mode-past hidden></mode-past>
-    <mode-manual hidden></mode-manual>
+    <current-panel></current-panel>
+    <past-panel hidden></past-panel>
+    <manual-panel hidden></manual-panel>
   </div>
 `;
 

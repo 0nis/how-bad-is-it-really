@@ -2,9 +2,10 @@ import { subscribe } from "../../../../app/store.js";
 import { globalSheet } from "../../../../styles/sheets/global.js";
 import { renderShadow } from "../../../../utils/shadow.js";
 import { modeSheet } from "../../style.js";
+import { setYearCount } from "../helpers.js";
 import { template } from "./template.js";
 
-class ModeManual extends HTMLElement {
+class ModeManualPanel extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -20,11 +21,17 @@ class ModeManual extends HTMLElement {
         this.hidden = mode !== "manual";
       },
     );
+
+    this.unsubscribeSettings = setYearCount(
+      this.shadowRoot.querySelector("#year-count"),
+      this.shadowRoot.querySelector("#year-count-desc"),
+    );
   }
 
   disconnectedCallback() {
     this.unsubscribe?.();
+    this.unsubscribeSettings?.();
   }
 }
 
-customElements.define("mode-manual", ModeManual);
+customElements.define("manual-panel", ModeManualPanel);
