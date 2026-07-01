@@ -1,7 +1,7 @@
 import "./suggestions/index.js";
 
 import { searchLocations } from "../../api/locations.js";
-import { setState, subscribe } from "../../app/store.js";
+import { getState, setState, subscribe } from "../../app/store.js";
 import { globalSheet } from "../../styles/sheets/global.js";
 import { el } from "../../utils/dom.js";
 import { renderShadow } from "../../utils/shadow.js";
@@ -46,6 +46,7 @@ class Search extends HTMLElement {
 
     if (query.length < 2) {
       this.suggestionsEl.setSuggestions([]);
+      if (getState().selectedLocation) setState({ selectedLocation: null });
       return;
     }
 

@@ -4,12 +4,12 @@ export const template = /* HTML */ `
   <div id="panel" class="panel">
     <div class="actions">
       <p class="description">
-        Compares today's current feels-like temperature to the exact same time
-        of day and year over the past
+        Compares the current feels-like temperature to the average of similar
+        dates and times from the past
         <span id="year-count">${DEFAULT_SETTINGS.historicalYears}</span>
         <span id="year-count-desc">years</span>.
       </p>
-      <start-analysis-button></start-analysis-button>
+      <start-analysis-button ready disabled></start-analysis-button>
     </div>
   </div>
 `;

@@ -8,7 +8,6 @@ const state = {
   options: {
     past: {
       date: null,
-      comparison: null,
     },
     manual: {
       temperature: null,

@@ -46,7 +46,6 @@ modeSheet.replaceSync(/* CSS */ `
         letter-spacing: 0.05em;
         display: flex;
         align-items: center;
-        gap: 0.4rem;
     }
 
     .optional {
@@ -96,5 +95,11 @@ modeSheet.replaceSync(/* CSS */ `
     }
     input[type="number"] {
         -moz-appearance: textfield;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        input {
+            transition: none;
+        }
     }
 `);

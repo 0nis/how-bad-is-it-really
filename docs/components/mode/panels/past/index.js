@@ -1,5 +1,5 @@
 import { getSettings, subscribeToSettings } from "../../../../app/settings.js";
-import { subscribe } from "../../../../app/store.js";
+import { setState, subscribe } from "../../../../app/store.js";
 import { globalSheet } from "../../../../styles/sheets/global.js";
 import { renderShadow } from "../../../../utils/shadow.js";
 import { pluralize } from "../../../../utils/string.js";
@@ -38,16 +38,22 @@ class ModePastPanel extends HTMLElement {
   init() {
     this.render();
 
-    const typeInput = this.shadowRoot.querySelector("#type");
-    typeInput.options = [
-      { label: "Max", value: "max" },
-      { label: "Min", value: "min" },
-    ];
-    typeInput.value = "max";
+    this.dateEl = this.shadowRoot.querySelector("#date");
+    this.startBtn = this.shadowRoot.querySelector("start-analysis-button");
+
+    this.dateEl.addEventListener("input", () => {
+      setState({ options: { past: { date: this.dateEl.value } } });
+      this.checkIfReady();
+    });
   }
 
   render() {
     renderShadow(this.shadowRoot, template);
+  }
+
+  checkIfReady() {
+    if (this.dateEl.value) this.startBtn.ready = true;
+    else this.startBtn.ready = false;
   }
 }
 

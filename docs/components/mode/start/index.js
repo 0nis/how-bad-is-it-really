@@ -1,3 +1,4 @@
+import { subscribe } from "../../../app/store.js";
 import { globalSheet } from "../../../styles/sheets/global.js";
 import { renderShadow } from "../../../utils/shadow.js";
 import { style } from "./style.js";
@@ -5,8 +6,6 @@ import { template } from "./template.js";
 
 class StartAnalysisButton extends HTMLElement {
   static observedAttributes = ["disabled"];
-
-  // TODO: Set disabled to true when a location hasn't been selected yet
 
   constructor() {
     super();
@@ -29,6 +28,14 @@ class StartAnalysisButton extends HTMLElement {
         }),
       );
     });
+
+    this.unsubscribe = subscribe(
+      (state) => state.selectedLocation,
+      (location) => {
+        this.locationSelected = location !== null;
+        this.sync();
+      },
+    );
   }
 
   attributeChangedCallback() {
@@ -36,6 +43,9 @@ class StartAnalysisButton extends HTMLElement {
   }
 
   sync() {
+    if (!this.ready || !this.locationSelected) this.disabled = true;
+    else this.disabled = false;
+
     this.button.disabled = this.disabled;
   }
 
@@ -45,6 +55,15 @@ class StartAnalysisButton extends HTMLElement {
 
   set disabled(value) {
     this.toggleAttribute("disabled", value);
+  }
+
+  get ready() {
+    return this.hasAttribute("ready");
+  }
+
+  set ready(value) {
+    this.toggleAttribute("ready", value);
+    this.sync();
   }
 }
 
