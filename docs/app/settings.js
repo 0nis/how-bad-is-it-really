@@ -96,7 +96,7 @@ function sanitise(partial) {
   )
     clean.unitSystem = partial.unitSystem;
 
-  for (const key of ["historicalYears", "windowDays", "windowHours"]) {
+  for (const key of Object.keys(SETTINGS_BOUNDS)) {
     if (partial[key] === undefined) continue;
     const { min, max } = SETTINGS_BOUNDS[key];
     const value = Number(partial[key]);

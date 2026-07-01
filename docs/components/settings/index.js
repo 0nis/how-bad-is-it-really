@@ -66,9 +66,11 @@ class SiteSettings extends HTMLElement {
   }
 
   init() {
-    this.renderFromSettings(getSettings());
+    this.settings = getSettings();
+    this.renderUnitSelector();
 
     this.initUnitSelector();
+
     this.initSliders();
     this.initReset();
   }
@@ -90,80 +92,42 @@ class SiteSettings extends HTMLElement {
     });
   }
 
-  renderFromSettings(settings) {
-    this.renderUnitSelector(settings);
-    this.renderSliders(settings);
-  }
-
-  renderUnitSelector(settings) {
+  renderUnitSelector() {
     this.panel.querySelectorAll("input[name=unit-system]").forEach((input) => {
-      input.checked = input.value === settings.unitSystem;
+      input.checked = input.value === this.settings.unitSystem;
     });
   }
 
   initSliders() {
-    this.applyBounds(
+    this.setupSlider(
       "setting-historical-years",
+      "historicalYears",
       SETTINGS_BOUNDS.historicalYears,
     );
-    this.applyBounds("setting-window-days", SETTINGS_BOUNDS.windowDays);
-    this.applyBounds("setting-window-hours", SETTINGS_BOUNDS.windowHours);
-    this.applyBounds("setting-min-readings", SETTINGS_BOUNDS.minReadings);
-
-    this.bindSlider("setting-historical-years", "historicalYears", "yr");
-    this.bindSlider("setting-window-days", "windowDays", "day", "±");
-    this.bindSlider("setting-window-hours", "windowHours", "hr", "±");
-    this.bindSlider("setting-min-readings", "minReadings");
-  }
-
-  renderSliders(settings) {
-    this.setSliderValue(
-      "setting-historical-years",
-      settings.historicalYears,
-      "yr",
+    this.setupSlider(
+      "setting-window-days",
+      "windowDays",
+      SETTINGS_BOUNDS.windowDays,
     );
-    this.setSliderValue("setting-window-days", settings.windowDays, "day", "±");
-    this.setSliderValue(
+    this.setupSlider(
       "setting-window-hours",
-      settings.windowHours,
-      "hr",
-      "±",
+      "windowHours",
+      SETTINGS_BOUNDS.windowHours,
     );
-    this.setSliderValue("setting-min-readings", settings.minReadings);
+    this.setupSlider(
+      "setting-min-readings",
+      "minReadings",
+      SETTINGS_BOUNDS.minReadings,
+    );
   }
 
-  bindSlider(id, settingKey, unitLabel, prefix) {
+  setupSlider(id, key, bounds) {
     const slider = this.shadowRoot.querySelector(`#${id}`);
-    const output = this.shadowRoot.querySelector(`#${id}-value`);
-    if (!slider) return;
-
-    slider.addEventListener("input", () => {
-      if (output)
-        output.textContent = this.formatValue(slider.value, unitLabel, prefix);
-    });
+    slider.applyBounds(bounds);
+    slider.value = this.settings[key];
     slider.addEventListener("change", () => {
-      updateSettings({ [settingKey]: Number(slider.value) });
+      updateSettings({ [key]: Number(slider.value) });
     });
-  }
-
-  applyBounds(id, { min, max, step }) {
-    const el = this.shadowRoot.querySelector(`#${id}`);
-    if (!el) return;
-    el.min = min;
-    el.max = max;
-    el.step = step;
-  }
-
-  setSliderValue(id, value, unitLabel, prefix) {
-    const slider = this.shadowRoot.querySelector(`#${id}`);
-    const output = this.shadowRoot.querySelector(`#${id}-value`);
-    if (slider) slider.value = value;
-    if (output) output.textContent = this.formatValue(value, unitLabel, prefix);
-  }
-
-  formatValue(value, unitLabel, prefix) {
-    const n = Number(value);
-    return `${prefix ?? ""}${n}${unitLabel ? ` ${pluralize(unitLabel, n)}` : ""}`;
   }
 }
 

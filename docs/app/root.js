@@ -4,6 +4,9 @@ import "../components/search/index.js";
 import "../components/mode/container.js";
 import "../components/panels/container.js";
 import "../components/footer/index.js";
+
+import "../components/form/slider/index.js";
+
 import { globalSheet } from "../styles/sheets/global.js";
 import { runAnalysis } from "../core/analysis.js";
 

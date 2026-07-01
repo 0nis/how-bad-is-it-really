@@ -43,54 +43,50 @@ export const template = /* HTML */ `
     </div>
 
     <div class="section">
-      <div class="slider-row">
-        <label for="setting-historical-years" class="section-label">
-          Historical years
-        </label>
-        <span id="setting-historical-years-value" class="slider-value"
-          >±${DEFAULT_SETTINGS.historicalYears} yr</span
+      <custom-slider id="setting-historical-years" unit="yr">
+        <label
+          slot="label"
+          class="section-label"
+          for="setting-historical-years-input"
+          >Historical years</label
         >
-      </div>
-      <input type="range" id="setting-historical-years" class="slider" />
+      </custom-slider>
       <p class="hint">How far back to pull comparison data from.</p>
     </div>
 
     <div class="section">
-      <div class="slider-row">
-        <label for="setting-window-days" class="section-label">
-          Day window
-        </label>
-        <span id="setting-window-days-value" class="slider-value"
-          >±${DEFAULT_SETTINGS.windowDays} day</span
+      <custom-slider id="setting-window-days" unit="day" prefix="±">
+        <label
+          slot="label"
+          class="section-label"
+          for="setting-window-days-input"
+          >Day window</label
         >
-      </div>
-      <input type="range" id="setting-window-days" class="slider" />
+      </custom-slider>
       <p class="hint">Days around the selected date to include, each year.</p>
     </div>
 
     <div class="section">
-      <div class="slider-row">
-        <label for="setting-window-hours" class="section-label">
-          Hour window
-        </label>
-        <span id="setting-window-hours-value" class="slider-value"
-          >±${DEFAULT_SETTINGS.windowHours} hr</span
+      <custom-slider id="setting-window-hours" unit="hr" prefix="±">
+        <label
+          slot="label"
+          class="section-label"
+          for="setting-window-hours-input"
+          >Hour window</label
         >
-      </div>
-      <input type="range" id="setting-window-hours" class="slider" />
+      </custom-slider>
       <p class="hint">Hours around the selected time to include.</p>
     </div>
 
     <div class="section">
-      <div class="slider-row">
-        <label for="setting-min-readings" class="section-label">
-          Minimum readings
-        </label>
-        <span id="setting-min-readings-value" class="slider-value"
-          >±${DEFAULT_SETTINGS.minReadings}</span
+      <custom-slider id="setting-min-readings">
+        <label
+          slot="label"
+          class="section-label"
+          for="setting-min-readings-input"
+          >Minimum readings</label
         >
-      </div>
-      <input type="range" id="setting-min-readings" class="slider" />
+      </custom-slider>
       <p class="hint">
         Minimum number of historical readings needed for analysis.
       </p>
