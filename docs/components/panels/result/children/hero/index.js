@@ -1,6 +1,6 @@
 import { globalSheet } from "../../../../../styles/sheets/global.js";
 import { renderShadow } from "../../../../../utils/shadow.js";
-import { capitalize } from "../../../../../utils/string.js";
+import { capitalize, cleanNumberString } from "../../../../../utils/string.js";
 import { style } from "./style.js";
 import { template } from "./template.js";
 import { APPSTATE } from "../../../../../types.js";
@@ -39,9 +39,9 @@ class ResultHero extends HTMLElement {
    */
   getDescription(sigma, pct, loc) {
     if (sigma > 0)
-      return `Hotter than ${pct.toFixed(pct >= 99 ? 1 : 0)}% of days like this in ${loc}`;
+      return `Hotter than ${cleanNumberString(String(pct.toFixed(pct >= 99 ? 1 : 0)))}% of days like this in ${loc}`;
     else
-      return `Colder than ${pct.toFixed(pct <= 1 ? 1 : 0)}% of days like this in ${loc}`;
+      return `Colder than ${cleanNumberString(String(pct.toFixed(pct <= 1 ? 1 : 0)))}% of days like this in ${loc}`;
   }
 }
 

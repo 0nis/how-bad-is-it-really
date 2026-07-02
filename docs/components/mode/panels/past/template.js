@@ -13,7 +13,7 @@ export const template = /* HTML */ `
         <span id="comparison-metric">feels-like</span> temperature to the
         historical average peak for similar dates over the past
         <span id="year-count">${DEFAULT_SETTINGS.historicalYears}</span>
-        <span id="year-count-desc">years</span>
+        <span id="year-count-desc">years</span>.
       </p>
       <start-analysis-button disabled></start-analysis-button>
     </div>

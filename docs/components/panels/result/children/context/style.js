@@ -21,4 +21,10 @@ export const style = /* CSS */ `
     #context .important {
         color: var(--text-secondary);
     }
+
+    @media (max-width: 400px) {
+        #context p {
+            font-size: 0.7rem;
+        }
+    }
 `;

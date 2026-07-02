@@ -32,7 +32,7 @@ export const template = /* HTML */ `
         Tests any air temperature against the highest or lowest recorded
         temperatures for this location over the past
         <span id="year-count">${DEFAULT_SETTINGS.historicalYears}</span>
-        <span id="year-count-desc">years</span>
+        <span id="year-count-desc">years</span>.
       </p>
       <start-analysis-button disabled></start-analysis-button>
     </div>

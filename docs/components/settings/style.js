@@ -54,17 +54,20 @@ export const style = /* CSS */ `
         letter-spacing: -0.01em;
     }
     
-    .reset-btn {
+    .close-btn {
         background: none;
         border: none;
-        color: var(--text-tertiary);
-        font-family: var(--font-body);
-        font-size: 0.8rem;
+        color: var(--text-secondary);
+        font-size: 1rem;
         cursor: pointer;
-        padding: 0.25rem 0;
         transition: color 0.15s;
+        width: 1.5rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .reset-btn:hover {
+    .close-btn:hover {
         color: var(--accent);
     }
     
@@ -84,6 +87,20 @@ export const style = /* CSS */ `
         font-size: 0.75rem;
         color: var(--text-tertiary);
         line-height: 1.5;
+    }
+
+    .reset-btn {
+        background: none;
+        border: none;
+        color: var(--text-tertiary);
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0.25rem 0;
+        transition: color 0.15s;
+    }
+    .reset-btn:hover {
+        color: var(--accent);
     }
     
     @media (prefers-reduced-motion: reduce) {

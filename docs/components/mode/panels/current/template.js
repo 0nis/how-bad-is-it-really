@@ -8,7 +8,7 @@ export const template = /* HTML */ `
         <span id="comparison-metric">feels-like</span> temperature to the
         average of similar dates and times from the past
         <span id="year-count">${DEFAULT_SETTINGS.historicalYears}</span>
-        <span id="year-count-desc">years</span>
+        <span id="year-count-desc">years</span>.
       </p>
       <start-analysis-button ready disabled></start-analysis-button>
     </div>

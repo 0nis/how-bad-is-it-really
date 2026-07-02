@@ -38,20 +38,21 @@ export const style = /* CSS */ `
     }
 
     #frequency {
-        font-size: 0.9rem;
+        font-size: 90%;
         color: var(--text-secondary);
     }
 
-    #temp-descriptor {
-        font-size: 1.1rem;
-        font-weight: 600;
+    #description {
         color: var(--text-primary);
-        margin-top: 0.25rem;
     }
 
-    #pct-descriptor {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        font-style: italic;
+    @media (max-width: 550px) {
+        #frequency {
+            font-size: 85%;
+        }
+
+        #description {
+            font-size: 90%;
+        }
     }
 `;

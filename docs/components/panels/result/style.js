@@ -24,4 +24,16 @@ export const style = /* CSS */ `
         border-top: 1px solid var(--border-soft);
         margin: 1.5rem 0;
     }
+
+    @media (max-width: 550px) {
+        .context p {
+            font-size: 0.7rem;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .context p {
+            font-size: 0.6rem;
+        }
+    }
 `;

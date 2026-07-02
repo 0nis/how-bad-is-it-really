@@ -2,6 +2,7 @@ export const style = /* CSS */ `
     .toggle {
         border: none;
         display: flex;
+        flex-direction: row;
         background: var(--bg-1);
         border: 1px solid var(--border);
         border-radius: var(--r-md);
@@ -34,6 +35,7 @@ export const style = /* CSS */ `
             background 0.15s,
             color 0.15s;
         user-select: none;
+        height: 100%;
     }
 
     .option input:checked + .label {
@@ -47,6 +49,12 @@ export const style = /* CSS */ `
     .label-icon {
         display: flex;
         align-items: center;
+    }
+
+    @media (max-width: 550px) {
+        .toggle {
+            flex-direction: column;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {

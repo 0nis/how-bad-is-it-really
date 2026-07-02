@@ -31,6 +31,9 @@ class SiteSettings extends HTMLElement {
       if (e.key === "Escape" && !this.panel.hidden)
         setState({ settingsOpen: false });
     });
+    this.shadowRoot.querySelector("#close").addEventListener("click", () => {
+      setState({ settingsOpen: false });
+    });
 
     this.unsubscribe = subscribe(
       (state) => state.settingsOpen,

@@ -33,6 +33,8 @@ export async function runAnalysis() {
       analysis: null,
     });
 
+    document.dispatchEvent(new Event("analysis-start"));
+
     const state = getState();
     const settings = getSettings();
     const location = state.selectedLocation;

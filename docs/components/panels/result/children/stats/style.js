@@ -22,7 +22,7 @@ export const style = /* CSS */ `
 
     table thead {
         color: var(--text-secondary);
-        font-size: 0.75rem;
+        font-size: 90%;
     }
     table thead th {
         text-transform: uppercase;
@@ -67,5 +67,23 @@ export const style = /* CSS */ `
 
     table tbody th {
         font-size: 95%;
+    }
+
+    @media (max-width: 550px) {
+        table {
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 400px) {
+        table {
+            font-size: 0.7rem;
+        }
+    }
+
+    @media (max-width: 340px) {
+        table {
+            font-size: 0.65rem;
+        }
     }
 `;

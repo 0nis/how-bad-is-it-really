@@ -43,4 +43,10 @@ export const style = /* CSS */ `
             transition: none;
         }
     }
+
+    @media (max-width: 400px) {
+        #input {
+            font-size: 0.9rem;
+        }
+    }
 `;

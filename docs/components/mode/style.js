@@ -16,6 +16,7 @@ modeSheet.replaceSync(/* CSS */ `
         gap: 1rem;
         justify-content: space-between;
         align-items: center;
+        flex-direction: row;
     }
     .actions > * {
         align-self: center;
@@ -95,6 +96,15 @@ modeSheet.replaceSync(/* CSS */ `
     }
     input[type="number"] {
         -moz-appearance: textfield;
+    }
+
+    @media (max-width: 550px) {
+        .actions {
+            flex-direction: column;
+        }
+        .fields {
+            grid-template-columns: 1fr;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {

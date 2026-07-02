@@ -23,6 +23,8 @@ class PanelContainer extends HTMLElement {
     this.loading = this.shadowRoot.querySelector("loading-panel");
     this.error = this.shadowRoot.querySelector("error-panel");
     this.result = this.shadowRoot.querySelector("result-panel");
+
+    document.addEventListener("analysis-start", () => this.scrollToSelf());
   }
 
   connectedCallback() {
@@ -72,6 +74,15 @@ class PanelContainer extends HTMLElement {
   disconnectedCallback() {
     this.unsubscribeStatus?.();
     this.unsubscribeMode?.();
+  }
+
+  scrollToSelf() {
+    requestAnimationFrame(() => {
+      this.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
   }
 }
 
