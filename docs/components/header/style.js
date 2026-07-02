@@ -51,57 +51,27 @@ export const style = /* CSS */ `
         background: var(--bg-1);
         border: 1px solid var(--border);
         border-radius: var(--r-sm);
-        color: var(--text-secondary);
+        color: #f2eeee;
         cursor: pointer;
-    }
-
-    .github-link {
-        transition: color 0.15s, border-color 0.15s, transform 0.4s ease;
+        transition: border-color 0.15s;
         text-decoration: none;
     }
-    .github-link:hover {
-        color: var(--text-primary);
+    .actions > *:hover {
         border-color: var(--accent-dim);
+        color: var(--accent);
     }
-    .github-link:active {
-        transform: scale(0.94);
-    }
-    .github-link img {
+    .actions svg {
         width: 18px;
         height: 18px;
-        transition: transform 0.3s ease;
     }
-
-    .settings-trigger {
-        transition: color 0.15s, border-color 0.15s, transform 0.4s ease;
-    }
-    
-    .settings-trigger:hover {
-        color: var(--text-primary);
-        border-color: var(--accent-dim);
-    }
-    
-    .settings-trigger:active {
-        transform: scale(0.94);
-    }
-    
     .settings-trigger[aria-expanded="true"] {
         color: var(--accent);
         border-color: var(--accent-dim);
     }
-    
-    .settings-trigger[aria-expanded="true"] svg {
-        transform: rotate(45deg);
-        transition: transform 0.3s ease;
-    }
-    .settings-trigger svg {
-        transition: transform 0.3s ease;
-    }
 
     @media (prefers-reduced-motion: reduce) {
-        .settings-trigger svg {
+        .actions > * {
             transition: none;
-            animation: none;
         }
     }
 `;
