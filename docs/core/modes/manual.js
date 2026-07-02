@@ -35,20 +35,12 @@ const SEASONS = {
  *   stats: typeof HISTORICAL[],
  *   sigma: number,
  *   sampleSize: number,
- *   basedOn: {
- *      mode: "temperature" | "apparentTemperature",
- *      comparison: "min" | "max" | "mean"
- *   },
+ *   basedOn: string,
  *   readings: typeof DAILY_CONDITIONS[],
  * }}
  */
 export async function runAnalysisManual(state, settings, location) {
   const now = new Date();
-  const conditions = {
-    datetime: now.toISOString(),
-    temperature: state.options.manual.temperature,
-  };
-  if (!conditions.temperature) throw new Error("Please enter a temperature!");
 
   const comparison = state.options.manual.comparison;
   if (!comparison || !["min", "max"].includes(comparison))
@@ -57,6 +49,15 @@ export async function runAnalysisManual(state, settings, location) {
   const season = state.options.manual.season;
   if (!season || !["spring", "summer", "autumn", "winter"].includes(season))
     throw new Error("Please select a season!");
+
+  const conditions = {
+    datetime: now.toISOString(),
+    temperature: {
+      [comparison]: state.options.manual.temperature,
+    },
+  };
+  if (!conditions.temperature || !conditions.temperature[comparison])
+    throw new Error("Please enter a temperature!");
 
   const endDate = toDateStr(now);
   const startDate = shiftYears(endDate, settings.historicalYears);
@@ -84,7 +85,7 @@ export async function runAnalysisManual(state, settings, location) {
   }
 
   const sigma = toSigma(
-    conditions.temperature,
+    conditions.temperature[comparison],
     stats.temperature[comparison].mean,
     stats.temperature[comparison].std,
   );
@@ -94,10 +95,7 @@ export async function runAnalysisManual(state, settings, location) {
     stats,
     sigma,
     sampleSize: stats.temperature[comparison].count,
-    basedOn: {
-      mode: "temperature",
-      comparison,
-    },
+    basedOn: `temperature.${comparison}`,
     readings: windowedReadings,
   };
 }

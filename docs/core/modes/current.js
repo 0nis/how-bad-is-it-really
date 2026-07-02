@@ -20,10 +20,7 @@ import { LOCATION, CONDITIONS, HISTORICAL, APPSTATE } from "../../types.js";
  *   stats: typeof HISTORICAL[],
  *   sigma: number,
  *   sampleSize: number,
- *   basedOn: {
- *      mode: "temperature" | "apparentTemperature",
- *      comparison: "min" | "max" | "mean"
- *   },
+ *   basedOn: string,
  *   readings: typeof CONDITIONS[],
  * }}
  */
@@ -75,10 +72,7 @@ export async function runAnalysisCurrent(state, settings, location) {
     stats,
     sigma,
     sampleSize: stats[mode].count,
-    basedOn: {
-      mode,
-      comparison: "mean",
-    },
+    basedOn: mode,
     readings: windowedReadings,
   };
 }

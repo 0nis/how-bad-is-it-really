@@ -1,6 +1,7 @@
 import "./children/hero/index.js";
 import "./children/gauge/index.js";
 import "./children/stats/index.js";
+import "./children/context/index.js";
 
 import { panelSheet } from "../style.js";
 import { globalSheet } from "../../../styles/sheets/global.js";
@@ -22,9 +23,11 @@ class ResultPanel extends HTMLElement {
     this.locationEl = this.shadowRoot.querySelector("#location");
     this.datetimeEl = this.shadowRoot.querySelector("#datetime");
     this.sigmaEl = this.shadowRoot.querySelector("#sigma");
+
     this.hero = this.shadowRoot.querySelector("result-hero");
     this.gauge = this.shadowRoot.querySelector("result-gauge");
     this.stats = this.shadowRoot.querySelector("result-stats");
+    this.context = this.shadowRoot.querySelector("result-context");
   }
 
   connectedCallback() {
@@ -52,11 +55,12 @@ class ResultPanel extends HTMLElement {
 
     this.setDateTime(result.datetime);
     this.setLocation(result.location);
-    this.setSigma(result.sigma, result.settings.historicalYears);
+    this.setSigma(result.sigma, result.context.settings.historicalYears);
 
     this.hero.setData(result);
     this.gauge.setData(result);
-    this.stats.setData(result, result.settings.unitSystem);
+    this.stats.setData(result, result.context.settings.unitSystem);
+    this.context.setData(result);
   }
 
   /** @param {string} datetime ISO 8601 */

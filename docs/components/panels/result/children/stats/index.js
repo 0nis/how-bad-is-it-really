@@ -8,9 +8,8 @@ import {
 import { style } from "./style.js";
 import { template } from "./template.js";
 import { APPSTATE } from "../../../../../types.js";
-
-// TODO: make stats work for min/max readings
-// just make the whole thing dynamic pls
+import { el } from "../../../../../utils/dom.js";
+import { flatten } from "../../../../../utils/objects.js";
 
 class ResultStats extends HTMLElement {
   constructor() {
@@ -20,43 +19,64 @@ class ResultStats extends HTMLElement {
 
     renderShadow(this.shadowRoot, template, style);
 
-    this.metrics = {
-      temperature: {
-        row: "#temp",
-        id: "temperature",
-        format: (v, unitSystem) => formatTemp(v, unitSystem),
-      },
+    this.tbodyEl = this.shadowRoot.querySelector("tbody");
 
-      feels: {
-        row: "#feels",
-        id: "apparentTemperature",
-        format: (v, unitSystem) => formatTemp(v, unitSystem),
+    this.metrics = [
+      {
+        key: "temperature",
+        label: "Temperature",
+        format: (v, units) => formatTemp(v, units),
       },
-
-      humidity: {
-        row: "#hum",
-        id: "humidity",
-        format: (v) => `${v.toFixed(1)}%`,
+      {
+        key: "apparentTemperature",
+        label: "Feels like",
+        format: (v, units) => formatTemp(v, units),
       },
-
-      precipitation: {
-        row: "#prec",
-        id: "precipitation",
-        format: (v, unitSystem) => formatPrecipitation(v, unitSystem),
+      {
+        key: "humidity",
+        label: "Humidity",
+        format: (v) => {
+          return { value: `${v.toFixed(1)}`, unit: "%" };
+        },
       },
-
-      wind: {
-        row: "#wind",
-        id: "windSpeed",
-        format: (v, unitSystem) => formatWind(v, unitSystem),
+      {
+        key: "precipitation",
+        label: "Precipitation",
+        format: (v, units) => formatPrecipitation(v, units),
       },
-
-      cloudCover: {
-        row: "#cc",
-        id: "cloudCover",
-        format: (v) => `${Math.round(v)}%`,
+      {
+        key: "windSpeed",
+        label: "Wind",
+        format: (v, units) => formatWind(v, units),
       },
-    };
+      {
+        key: "cloudCover",
+        label: "Cloud cover",
+        format: (v) => {
+          return { value: `${Math.round(v)}`, unit: "%" };
+        },
+      },
+      {
+        key: "temperature.min",
+        label: "Min temperature",
+        format: (v, units) => formatTemp(v, units),
+      },
+      {
+        key: "temperature.max",
+        label: "Max temperature",
+        format: (v, units) => formatTemp(v, units),
+      },
+      {
+        key: "apparentTemperature.min",
+        label: "Min feels like",
+        format: (v, units) => formatTemp(v, units),
+      },
+      {
+        key: "apparentTemperature.max",
+        label: "Max feels like",
+        format: (v, units) => formatTemp(v, units),
+      },
+    ];
   }
 
   /**
@@ -64,34 +84,62 @@ class ResultStats extends HTMLElement {
    * @param {"metric" | "imperial"} unitSystem
    */
   setData(result, unitSystem = "metric") {
-    for (const key in this.metrics) {
-      const m = this.metrics[key];
+    this.tbodyEl.innerHTML = "";
+    this.hidden = false;
 
-      const row = this.shadowRoot.querySelector(m.row);
+    const flatObserved = flatten(result.observed);
+    const flatHistorical = flatten(result.historical);
 
-      if (
-        (result.basedOn === "raw" && key === "temperature") ||
-        (result.basedOn === "feels" && key === "feels")
-      )
+    for (const m of this.metrics) {
+      const observed = flatObserved[m.key];
+      const mean = flatHistorical[`${m.key}.mean`];
+      const std = flatHistorical[`${m.key}.std`];
+
+      if (observed === undefined || mean === undefined || std === undefined)
+        continue;
+
+      const fmt = (v) => m.format(v, unitSystem);
+
+      const row = this.buildRow(m, fmt(observed), fmt(mean), fmt(std));
+
+      if (result.basedOn === m.key)
         row.style.setProperty("color", "var(--accent)");
 
-      const observed = result.observed[m.id];
-      const mean = result.historical[m.id]?.mean;
-      const std = result.historical[m.id]?.std;
-
-      if (observed == null || mean == null || std == null) {
-        row.hidden = true;
-        continue;
-      }
-
-      const fmt = (v) => {
-        return m.format(v, unitSystem);
-      };
-
-      row.querySelector("[data-now]").textContent = fmt(observed);
-      row.querySelector("[data-mean]").textContent = fmt(mean);
-      row.querySelector("[data-std]").textContent = `±${fmt(std)}`;
+      this.tbodyEl.appendChild(row);
     }
+
+    if (this.tbodyEl.children.length === 0) this.hidden = true;
+  }
+
+  buildRow(m, observed, mean, std) {
+    return el(
+      "tr",
+      {
+        attrs: {
+          "data-key": m.key,
+        },
+      },
+      [
+        el("th", {
+          textContent: m.label,
+          attrs: {
+            scope: "row",
+          },
+        }),
+        el("td", { attrs: { "data-observed": "" } }, [
+          el("span", { textContent: observed.value, className: "value" }),
+          el("span", { textContent: observed.unit, className: "unit" }),
+        ]),
+        el("td", { attrs: { "data-mean": "" } }, [
+          el("span", { textContent: mean.value, className: "value" }),
+          el("span", { textContent: mean.unit, className: "unit" }),
+        ]),
+        el("td", { attrs: { "data-std": "" } }, [
+          el("span", { textContent: `±${std.value}`, className: "value" }),
+          el("span", { textContent: std.unit, className: "unit" }),
+        ]),
+      ],
+    );
   }
 }
 

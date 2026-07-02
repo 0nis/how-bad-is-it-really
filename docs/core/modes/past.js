@@ -27,10 +27,7 @@ import { MIN_DATE } from "../../constants.js";
  *   stats: typeof HISTORICAL[],
  *   sigma: number,
  *   sampleSize: number,
- *   basedOn: {
- *      mode: "temperature" | "apparentTemperature",
- *      comparison: "min" | "max" | "mean"
- *   },
+ *   basedOn: string,
  *   readings: typeof DAILY_CONDITIONS[],
  * }}
  */
@@ -91,20 +88,18 @@ export async function runAnalysisPast(state, settings, location) {
       ? "apparentTemperature"
       : "temperature";
 
-  const value =
-    mode === "raw" ? conditions.temperature : conditions.apparentTemperature;
-
-  const sigma = toSigma(value.max, stats[mode].max.mean, stats[mode].max.std);
+  const sigma = toSigma(
+    conditions[mode].max,
+    stats[mode].max.mean,
+    stats[mode].max.std,
+  );
 
   return {
     conditions,
     stats,
     sigma,
     sampleSize: stats[mode].max.count,
-    basedOn: {
-      mode,
-      comparison: "max",
-    },
+    basedOn: `${mode}.max`,
     readings: windowedReadings,
   };
 }

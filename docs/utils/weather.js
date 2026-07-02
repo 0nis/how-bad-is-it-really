@@ -1,13 +1,17 @@
+import { cleanNumberString, formatNumber } from "./string.js";
+
 /**
  * Formats temperature to 1 decimal point, defaulting to °C
  *
  * @param {number} valueC value in °C
  * @param {"metric" | "imperial"} unitSystem metric or imperial
- * @returns {string} Formatted temperature
+ * @returns {{value: string, unit: string}} Formatted temperature
  */
 export function formatTemp(valueC, unitSystem = "metric") {
-  if (unitSystem === "imperial") return `${cToF(Number(valueC)).toFixed(1)}°F`;
-  return `${Number(valueC).toFixed(1)}°C`;
+  return formatNumber(
+    isImperial(unitSystem) ? cToF(valueC) : valueC,
+    isImperial(unitSystem) ? "°F" : "°C",
+  );
 }
 
 /**
@@ -15,12 +19,13 @@ export function formatTemp(valueC, unitSystem = "metric") {
  *
  * @param {number} valueMM value in mm
  * @param {"metric" | "imperial"} unitSystem metric or imperial
- * @returns {string} Formatted precipitation
+ * @returns {{value: string, unit: string}} Formatted precipitation
  */
 export function formatPrecipitation(value, unitSystem = "metric") {
-  if (unitSystem === "imperial")
-    return `${mmToIn(Number(value)).toFixed(1)} in.`;
-  return `${Number(value).toFixed(1)} mm`;
+  return formatNumber(
+    isImperial(unitSystem) ? mmToIn(value) : value,
+    isImperial(unitSystem) ? " in." : " mm",
+  );
 }
 
 /**
@@ -28,12 +33,13 @@ export function formatPrecipitation(value, unitSystem = "metric") {
  *
  * @param {number} value value in km/h
  * @param {"metric" | "imperial"} unitSystem metric or imperial
- * @returns {string} Formatted wind speed
+ * @returns {{value: string, unit: string}} Formatted wind speed
  */
 export function formatWind(value, unitSystem = "metric") {
-  if (unitSystem === "imperial")
-    return `${kmhToMph(Number(value)).toFixed(1)} mph`;
-  return `${Number(value).toFixed(1)} km/h`;
+  return formatNumber(
+    isImperial(unitSystem) ? kmhToMph(value) : value,
+    isImperial(unitSystem) ? " mph" : " km/h",
+  );
 }
 
 /**
@@ -66,4 +72,8 @@ export function mmToIn(mm) {
  */
 export function kmhToMph(kmh) {
   return kmh * 0.621371;
+}
+
+function isImperial(unitSystem) {
+  return unitSystem === "imperial";
 }

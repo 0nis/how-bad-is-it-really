@@ -45,10 +45,7 @@ export async function runAnalysis() {
      *   stats: typeof HISTORICAL[],
      *   sigma: number,
      *   sampleSize: number,
-     *   basedOn: {
-     *      mode: "temperature" | "apparentTemperature",
-     *      comparison: "min" | "max" | "mean"
-     *   },
+     *   basedOn: string,
      *   readings: typeof CONDITIONS[] | typeof DAILY_CONDITIONS[],
      * }}
      */
@@ -95,7 +92,12 @@ export async function runAnalysis() {
         basedOn: data.basedOn,
         observed: conditions,
         historical: stats,
-        settings: settings,
+        context: {
+          settings,
+          mode: state.mode,
+          season:
+            state.mode === "manual" ? state.options.manual.season : undefined,
+        },
       },
       error: null,
     });

@@ -1,35 +1,57 @@
 export const style = /* CSS */ `
-    .stats-card {
+    .stats {
         padding: 0.75rem;
         border-radius: 12px;
         background: var(--bg-1);
     }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr 1fr 1fr;
-        gap: 0.4rem 0.75rem;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
         font-size: 0.85rem;
     }
 
-    .row {
-        display: contents;
+    table col:first-child {
+        width: 40%;
     }
 
-    .row > div {
+    table th,
+    table td {
         padding: 0.25rem 0;
     }
 
-    .header {
+    table thead {
         color: var(--text-secondary);
         font-size: 0.75rem;
     }
-
-    .positive {
-        color: #ff6b6b;
+    table thead th:not(.metric) {
+        text-align: right;
     }
 
-    .negative {
-        color: #4dabf7;
+    table th {
+        text-align: left;
+        font-weight: inherit;
+    }
+
+    table td {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    table td .value {
+        font-variant-numeric: tabular-nums;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        text-align: right;
+    }
+
+    table td .unit {
+        display: inline-block;
+        min-width: 2ch;
+        font-size: 90%;
+        margin-left: .1rem;
+    }
+
+    table tbody th {
+        font-size: 95%;
     }
 `;

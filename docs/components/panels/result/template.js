@@ -9,5 +9,6 @@ export const template = /* HTML */ `
     <result-gauge></result-gauge>
     <hr class="divider" />
     <result-stats></result-stats>
+    <result-context></result-context>
   </section>
 `;

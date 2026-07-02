@@ -29,13 +29,13 @@
  *    severity: number,
  *    frequency: string,
  *    sampleSize: number,
- *    basedOn: {
- *       mode: "temperature" | "apparentTemperature",
- *       comparison: "min" | "max" | "mean"
- *    },
- *    observed: typeof CONDITIONS,
+ *    basedOn: string,
+ *    observed: typeof CONDITIONS | typeof DAILY_CONDITIONS,
  *    historical: typeof HISTORICAL,
- *    settings: typeof DEFAULT_SETTINGS
+ *    context: {
+ *      settings: typeof DEFAULT_SETTINGS,
+ *      mode: "current" | "past" | "manual",
+ *    }
  * } | null} analysis Units:
  * - datetime: ISO 8601
  * - temperature: °C
