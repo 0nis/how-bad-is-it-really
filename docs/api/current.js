@@ -31,8 +31,20 @@ export async function fetchCurrentConditions(lat, lon) {
 
   url.searchParams.set("timezone", "auto");
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Forecast fetch failed: ${res.status}`);
+  let res;
+  try {
+    res = await fetch(url);
+  } catch {
+    throw new Error(
+      "Unable to reach Open-Meteo's forecast API. Please check your internet connection.",
+    );
+  }
+  if (!res.ok) {
+    if (res.status === 404) return [];
+    throw new Error(
+      `${res.status}: ${res.statusText}${data.reason ? `: ${data.reason}` : ""}`,
+    );
+  }
 
   const data = await res.json();
 

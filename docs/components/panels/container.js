@@ -69,6 +69,16 @@ class PanelContainer extends HTMLElement {
         setState({ status: "idle" });
       },
     );
+
+    this.unsubscribeError = subscribe(
+      (state) => state.error,
+      (err, state) => {
+        if (err && state.status === "error") {
+          this.hidden = false;
+          this.error.show(err);
+        }
+      },
+    );
   }
 
   hide() {
@@ -81,6 +91,7 @@ class PanelContainer extends HTMLElement {
   disconnectedCallback() {
     this.unsubscribeStatus?.();
     this.unsubscribeMode?.();
+    this.unsubscribeError?.();
   }
 
   scrollToSelf() {

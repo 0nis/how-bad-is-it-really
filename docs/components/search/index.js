@@ -55,6 +55,7 @@ class Search extends HTMLElement {
         const locations = await searchLocations(query, 10);
         this.suggestionsEl.setSuggestions(locations);
       } catch (err) {
+        setState({ status: "error", error: err.message });
         console.error(err);
       }
     }, 300);

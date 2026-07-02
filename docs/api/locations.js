@@ -17,8 +17,20 @@ export async function searchLocations(query, count = 10) {
   url.searchParams.set("language", "en");
   url.searchParams.set("format", "json");
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Geocoding failed: ${res.status}`);
+  let res;
+  try {
+    res = await fetch(url);
+  } catch {
+    throw new Error(
+      "Unable to reach Open-Meteo's geocoding API. Please check your internet connection.",
+    );
+  }
+  if (!res.ok) {
+    if (res.status === 404) return [];
+    throw new Error(
+      `${res.status}: ${res.statusText}${data.reason ? `: ${data.reason}` : ""}`,
+    );
+  }
 
   const data = await res.json();
   return (data.results ?? []).map((raw) => {

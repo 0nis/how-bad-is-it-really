@@ -99,7 +99,14 @@ export async function fetchDailyHistoricalWeather(
 
   url.searchParams.set("timezone", "auto");
 
-  const res = await fetchWithRetry(url);
+  let res;
+  try {
+    res = await fetchWithRetry(url);
+  } catch {
+    throw new Error(
+      "Unable to reach Open-Meteo's archive API. Please check your internet connection.",
+    );
+  }
   const data = await res.json();
   if (!res.ok) {
     if (res.status === 404) return [];

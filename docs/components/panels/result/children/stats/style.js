@@ -11,10 +11,6 @@ export const style = /* CSS */ `
         font-size: 0.85rem;
     }
 
-    table col:first-child {
-        width: 40%;
-    }
-
     table th,
     table td {
         padding: 0.25rem 0;
