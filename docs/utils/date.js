@@ -114,9 +114,10 @@ export function clampDate(dateStr, min, max) {
  * Formats an ISO 8601 string to a human-readable datetime while preserving the original timezone.
  *
  * @param {string} iso ISO 8601 string
+ * @param {object} opts Options
  * @returns {string} Formatted date as 'July 14th, 13:00'
  */
-export function formatISO(iso) {
+export function formatISO(iso, { includeDate = true, includeTime = true }) {
   const date = new Date(iso);
 
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -140,5 +141,9 @@ export function formatISO(iso) {
           ? "rd"
           : "th";
 
-  return `${get("month")} ${day}${ordinal}, ${get("hour")}:${get("minute")}`;
+  const final = [];
+  if (includeDate) final.push(`${get("month")} ${day}${ordinal}`);
+  if (includeTime) final.push(`${get("hour")}:${get("minute")}`);
+
+  return final.join(", ");
 }

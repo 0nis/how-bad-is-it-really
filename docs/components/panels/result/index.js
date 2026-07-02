@@ -11,6 +11,7 @@ import { renderShadow } from "../../../utils/shadow.js";
 import { formatISO } from "../../../utils/date.js";
 import { APPSTATE } from "../../../types.js";
 import { subscribeToSettings } from "../../../app/settings.js";
+import { capitalize } from "../../../utils/string.js";
 
 class ResultPanel extends HTMLElement {
   constructor() {
@@ -53,7 +54,11 @@ class ResultPanel extends HTMLElement {
   setResult(result) {
     this._result = result;
 
-    this.setDateTime(result.datetime);
+    this.setDateTime(
+      result.datetime,
+      result.context.season,
+      result.context.mode,
+    );
     this.setLocation(result.location);
     this.setSigma(result.sigma, result.context.settings.historicalYears);
 
@@ -64,8 +69,23 @@ class ResultPanel extends HTMLElement {
   }
 
   /** @param {string} datetime ISO 8601 */
-  setDateTime(datetime) {
-    this.datetimeEl.textContent = formatISO(datetime);
+  setDateTime(datetime, season, mode) {
+    const get = () => {
+      if (mode === "current")
+        return formatISO(datetime, {
+          includeDate: true,
+          includeTime: true,
+        });
+      if (mode === "past")
+        return formatISO(datetime, {
+          includeDate: true,
+          includeTime: false,
+        });
+      if (mode === "manual") return capitalize(season);
+      return "";
+    };
+
+    this.datetimeEl.textContent = get();
   }
 
   /** @param {typeof APPSTATE.analysis.location} loc */

@@ -81,6 +81,10 @@ export async function runAnalysisManual(state, settings, location) {
     temperature: {
       min: computeStats(windowedReadings.map((r) => r.temperature.min).filter(Boolean)),
       max: computeStats(windowedReadings.map((r) => r.temperature.max).filter(Boolean)),
+    },
+    apparentTemperature: {
+      min: computeStats(windowedReadings.map((r) => r.apparentTemperature.min).filter(Boolean)),
+      max: computeStats(windowedReadings.map((r) => r.apparentTemperature.max).filter(Boolean)),
     }
   }
 

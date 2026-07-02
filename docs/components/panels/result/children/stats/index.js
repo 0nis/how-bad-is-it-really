@@ -29,7 +29,7 @@ class ResultStats extends HTMLElement {
       },
       {
         key: "apparentTemperature",
-        label: "Feels like",
+        label: "Feels-like",
         format: (v, units) => formatTemp(v, units),
       },
       {
@@ -68,12 +68,12 @@ class ResultStats extends HTMLElement {
       },
       {
         key: "apparentTemperature.min",
-        label: "Min feels like",
+        label: "Min feels-like",
         format: (v, units) => formatTemp(v, units),
       },
       {
         key: "apparentTemperature.max",
-        label: "Max feels like",
+        label: "Max feels-like",
         format: (v, units) => formatTemp(v, units),
       },
     ];
@@ -95,12 +95,16 @@ class ResultStats extends HTMLElement {
       const mean = flatHistorical[`${m.key}.mean`];
       const std = flatHistorical[`${m.key}.std`];
 
-      if (observed === undefined || mean === undefined || std === undefined)
-        continue;
+      if (mean === undefined || std === undefined) continue;
 
       const fmt = (v) => m.format(v, unitSystem);
 
-      const row = this.buildRow(m, fmt(observed), fmt(mean), fmt(std));
+      const row = this.buildRow(
+        m,
+        observed === undefined ? { value: "N/A", unit: "" } : fmt(observed),
+        fmt(mean),
+        fmt(std),
+      );
 
       if (result.basedOn === m.key)
         row.style.setProperty("color", "var(--accent)");
@@ -127,8 +131,14 @@ class ResultStats extends HTMLElement {
           },
         }),
         el("td", { attrs: { "data-observed": "" } }, [
-          el("span", { textContent: observed.value, className: "value" }),
-          el("span", { textContent: observed.unit, className: "unit" }),
+          el("span", {
+            textContent: observed.value,
+            className: `value ${observed.value === "N/A" ? "na" : ""}`,
+          }),
+          el("span", {
+            textContent: observed.unit,
+            className: `unit ${observed.value === "N/A" ? "na" : ""}`,
+          }),
         ]),
         el("td", { attrs: { "data-mean": "" } }, [
           el("span", { textContent: mean.value, className: "value" }),

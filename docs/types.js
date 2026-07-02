@@ -35,6 +35,7 @@
  *    context: {
  *      settings: typeof DEFAULT_SETTINGS,
  *      mode: "current" | "past" | "manual",
+ *      season: "spring" | "summer" | "autumn" | "winter"
  *    }
  * } | null} analysis Units:
  * - datetime: ISO 8601

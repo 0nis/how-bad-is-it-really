@@ -24,6 +24,13 @@ export const style = /* CSS */ `
         color: var(--text-secondary);
         font-size: 0.75rem;
     }
+    table thead th {
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        font-weight: 600;
+        font-size: 90%;
+        color: var(--text-tertiary);
+    }
     table thead th:not(.metric) {
         text-align: right;
     }
@@ -42,6 +49,13 @@ export const style = /* CSS */ `
         font-variant-numeric: tabular-nums;
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
         text-align: right;
+    }
+    table td .value.na {
+        color: var(--text-tertiary);
+        font-size: 90%;
+    }
+    table td .unit.na {
+        display: none;
     }
 
     table td .unit {
