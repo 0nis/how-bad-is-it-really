@@ -34,12 +34,12 @@ class ResultGauge extends HTMLElement {
   /** @param {number} severity */
   getColor(severity) {
     const colors = [
-      "var(--gauge-normal)",
-      "var(--gauge-mild)",
-      "var(--gauge-moderate)",
-      "var(--gauge-severe)",
-      "var(--gauge-extreme)",
-      "var(--gauge-critical)",
+      "var(--sev-0)",
+      "var(--sev-1)",
+      "var(--sev-2)",
+      "var(--sev-3)",
+      "var(--sev-4)",
+      "var(--sev-5)",
     ];
     return colors[Math.min(severity, colors.length - 1)];
   }

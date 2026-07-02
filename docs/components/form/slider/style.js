@@ -56,4 +56,10 @@ export const style = /* CSS */ `
         border-radius: 99px;
         background: var(--bg-2);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        input::-webkit-slider-thumb {
+            transition: none;
+        }
+    }
 `;

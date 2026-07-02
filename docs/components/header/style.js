@@ -51,7 +51,7 @@ export const style = /* CSS */ `
         background: var(--bg-1);
         border: 1px solid var(--border);
         border-radius: var(--r-sm);
-        color: #f2eeee;
+        color: var(--text-primary);
         cursor: pointer;
         transition: border-color 0.15s;
         text-decoration: none;

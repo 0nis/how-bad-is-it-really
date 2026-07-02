@@ -105,8 +105,11 @@ export const style = /* CSS */ `
     
     @media (prefers-reduced-motion: reduce) {
         .panel, .overlay {
-            transition: none;
+            transform: none;
             animation: none;
+        }
+        .reset-btn, .close-btn {
+            transition: none;
         }
     }
 `;

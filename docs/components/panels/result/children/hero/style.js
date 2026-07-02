@@ -55,4 +55,10 @@ export const style = /* CSS */ `
             font-size: 90%;
         }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        #label {
+            transition: none;
+        }
+    }
 `;

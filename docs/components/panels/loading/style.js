@@ -33,6 +33,19 @@ export const style = /* CSS */ `
     @media (prefers-reduced-motion: reduce) {
         .spinner {
             animation: none;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .spinner::before {
+            content: "Loading …";
+            display: block;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            color: var(--accent);
+            font-size: 2rem;
         }
     }
 `;

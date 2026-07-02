@@ -24,7 +24,14 @@ class PanelContainer extends HTMLElement {
     this.error = this.shadowRoot.querySelector("error-panel");
     this.result = this.shadowRoot.querySelector("result-panel");
 
-    document.addEventListener("analysis-start", () => this.scrollToSelf());
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    document.addEventListener("analysis-start", () => {
+      if (prefersReducedMotion) return;
+      this.scrollToSelf();
+    });
   }
 
   connectedCallback() {

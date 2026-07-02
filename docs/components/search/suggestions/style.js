@@ -39,4 +39,10 @@ export const style = /* CSS */ `
         font-size: 0.8rem;
         color: var(--text-secondary);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .item {
+            transition: none;
+        }
+    }
 `;

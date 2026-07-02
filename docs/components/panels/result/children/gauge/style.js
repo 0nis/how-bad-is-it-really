@@ -19,7 +19,7 @@ export const style = /* CSS */ `
         width: 50%;
         transform-origin: left center;
 
-        background: var(--gauge-color, var(--gauge-normal));
+        background: var(--gauge-color, var(--text-primary));
         border-radius: 99px;
 
         transition:
