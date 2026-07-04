@@ -41,9 +41,10 @@ globalSheet.replaceSync(/* CSS */ `
     display: none !important;
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 550px) {
     body {
       padding: 1.5rem 0.75rem;
+      padding-top: 0;
     }
   }
 `);

@@ -74,4 +74,10 @@ export const style = /* CSS */ `
             transition: none;
         }
     }
+
+    @media (max-width: 550px) {
+        header {
+            padding-top: 0;
+        }
+    }
 `;
