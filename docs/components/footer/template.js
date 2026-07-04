@@ -7,8 +7,8 @@ export const template = /* HTML */ `
       >
     </p>
     <p class="support">
-      <a href="https://buymeacoffee.com/0nis" target="_blank" rel="noopener">
-        Buy me a tea
+      <a href="https://ko-fi.com/0nis" target="_blank" rel="noopener">
+        Buy me a cup of tea
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1em"
