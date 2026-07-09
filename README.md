@@ -5,3 +5,5 @@ A small web app that shows how unusual current weather conditions are compared t
 Instead of only showing temperature and forecast data, it compares current conditions against long-term ERA5 climate data and expresses how extreme they are using statistical deviation (sigma).
 
 Uses the Open-Meteo API.
+
+https://0nis.github.io/how-bad-is-it-really/
